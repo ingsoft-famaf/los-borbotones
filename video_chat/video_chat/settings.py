@@ -55,7 +55,7 @@ ROOT_URLCONF = 'video_chat.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['video_chat/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

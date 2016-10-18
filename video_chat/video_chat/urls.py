@@ -16,7 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from videos import views
+
 urlpatterns = [
     url(r'^video/', include('videos.urls')),
+    url(r'^home/$', views.Home.as_view(), name='home'),
     url(r'^admin/', admin.site.urls),
 ]

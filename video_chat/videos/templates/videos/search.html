@@ -1,13 +1,17 @@
-{% extends 'videos/base.html' %}
+{% extends 'video_chat/base.html' %}
 
-{% if founded_videos %}
-    <ul>
-    {% for video in founded_videos %}
-        <li><a href="{% url 'videos:search' video.title %}">{{ video.title }}</a>
-        <p>{{video.description}}</p>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No videos found.</p>
-{% endif %}
+
+{% block content %}
+    {% if founded_videos %}
+        <ul>
+        {% for video in founded_videos %}
+            <li><a href="{% url 'home' %}">{{ video.title }}</a>
+            <p>{{video.description}}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No videos found.</p>
+    {% endif %}
+
+{% endblock content %}
