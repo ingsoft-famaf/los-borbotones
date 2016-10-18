@@ -1,0 +1,11 @@
+{% if founded_videos %}
+    <ul>
+    {% for video in founded_videos %}
+        <li><a href="{% url 'videos:search' video.title %}">{{ video.title }}</a>
+        <p>{{video.description}}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No videos found.</p>
+{% endif %}
