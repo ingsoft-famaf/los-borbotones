@@ -14,3 +14,7 @@ class SearchView(generic.ListView):
 
 class Home(generic.TemplateView):
     template_name = 'video_chat/home.html'
+
+class Play(generic.DetailView): # TODO
+    template_name = 'videos/play.html'
+    model = Video
