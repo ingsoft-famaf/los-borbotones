@@ -1,0 +1,19 @@
+{% load staticfiles %}
+    <html>
+        <head>
+            <title>Video Chat</title>
+        </head>
+        <body>
+            <div class="page-header">
+                <h1><a href="/">Video Chat</a></h1>
+            </div>
+			<form class="buscador" action="" method="get">
+				<input type="text"/>
+				<button class="submit" type="submit">Buscar</button>
+			<form/>
+            <div class="content container">
+				{% block content %}
+            	{% endblock %}
+            </div>
+        </body>
+    </html>
