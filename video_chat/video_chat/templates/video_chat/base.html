@@ -7,7 +7,7 @@
             <div class="page-header">
                 <h1><a href="/">Video Chat</a></h1>
             </div>
-			<form class="buscador" action="/video/search/" method="get">
+			<form class="buscador" action="{% url 'videos:search' %}" method="get">
 				<input type="text" name="search_key"/>
 				<button class="submit" type="submit">Buscar</button>
 			<form/>
