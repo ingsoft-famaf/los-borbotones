@@ -5,7 +5,7 @@
     {% if founded_videos %}
         <ul>
         {% for video in founded_videos %}
-            <li><a href="{% url 'home' %}">{{ video.title }}</a>
+            <li><a href="{% url 'videos:play' video.id  %}">{{ video.title }}</a>
             <p>{{video.description}}</p>
             </li>
         {% endfor %}
