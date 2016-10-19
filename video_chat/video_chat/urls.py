@@ -20,6 +20,7 @@ from videos import views
 
 urlpatterns = [
     url(r'^video/', include('videos.urls')),
-    url(r'^home/$', views.Home.as_view(), name='home'),
+    url(r'^$', views.Home.as_view(), name='home'),
+    url(r'^uploads/form/$', views.Upload, name='upload'),
     url(r'^admin/', admin.site.urls),
 ]

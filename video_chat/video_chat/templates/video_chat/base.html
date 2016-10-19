@@ -12,8 +12,11 @@
 				<button class="submit" type="submit">Buscar</button>
 			<form/>
             <div class="content container">
-		{% block content %}
+		        {% block content %}
             	{% endblock %}
+                <li>
+                    <a href="{% url 'upload' %}">Upload </a>
+                </li>
             </div>
         </body>
     </html>

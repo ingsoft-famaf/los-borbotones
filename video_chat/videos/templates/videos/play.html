@@ -1,0 +1,16 @@
+{% extends 'video_chat/base.html' %}
+
+
+{% block content %}
+    {% if video %}
+        <h3>{{title}}</h3>
+        <video width="320" height="240" controls>
+          <source src="{MEDIA_URL}}{{video.file}}" type="video/mp4"/><!--TODO-->
+        </video>
+        <p>{{video.description}}</p>
+    {% else %}
+        <p>video not found.</p>
+    {% endif %}
+
+
+{% endblock content %}
