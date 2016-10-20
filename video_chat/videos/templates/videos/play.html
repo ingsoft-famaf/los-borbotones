@@ -4,7 +4,7 @@
 {% block content %}
         <h3>{{title}}</h3>
         <video width="320" height="240" controls>
-          <source src="/media/videos/2016/10/19/pelicula.mp4" type="video/mp4"/><!--TODO-->
+          <source src="{{video.file.url}}" type="video/mp4"/><!--TODO-->
         </video>
         <p>{{video.description}}</p>
 
