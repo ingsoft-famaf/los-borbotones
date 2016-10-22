@@ -16,14 +16,18 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
-from videos import views
+from videos import views as videos_views
+from users import views as users_views
 from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^video/', include('videos.urls')),
-    url(r'^$', views.Home.as_view(), name='home'),
-    url(r'^uploads/form/$', views.Upload, name='upload'),
+    url(r'^$', videos_views.Home.as_view(), name='home'),
+    url(r'^uploads/form/$', videos_views.Upload, name='upload'),
     url(r'^admin/', admin.site.urls),
+	url(r'^register/$', users_views.Register, name='register'),
+    url(r'^login/$', users_views.UserLogin, name='login'),
+    url(r'^profile/$', users_views.UserLogin, name='profile'),
 ]
 if settings.DEBUG is True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
