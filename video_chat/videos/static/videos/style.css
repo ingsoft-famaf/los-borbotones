@@ -1,0 +1,23 @@
+p {
+    color: #ffffff;
+}
+
+h3.video_title {
+    text-align:center;
+    color: #ffffff;
+    font-size: 40px;
+    font-style: italic;
+}
+
+video {
+    background-color: black;
+}
+
+div.video_section{
+    margin:0 auto;
+    width: 50%;
+}
+
+body {
+    background-color: #1a1a1a;
+}

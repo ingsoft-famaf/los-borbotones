@@ -1,9 +1,7 @@
 {% extends 'video_chat/base.html' %}
 
     {% block content %}
-    <form action="/">
-        <input type="submit" value="Subir Video" />
-    </form>
-    
-    
+    <div>
+        <a href="{% url 'upload' %}">Upload </a>
+    </div>
     {% endblock content %}

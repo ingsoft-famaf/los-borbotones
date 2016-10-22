@@ -9,14 +9,12 @@
             </div>
 			<form class="buscador" action="{% url 'videos:search' %}" method="get">
 				<input type="text" name="search_key"/>
-				<button class="submit" type="submit">Buscar</button>
-			<form/>
+				<button class="submit" type="submit">Buscar</button><!--TODO usuario o video-->
+			</form>
             <div class="content container">
+                <!--TODO Prefil Boton - Desloguearse-->
 		        {% block content %}
-            	{% endblock %}
-                <li>
-                    <a href="{% url 'upload' %}">Upload </a>
-                </li>
+                {% endblock %}
             </div>
         </body>
     </html>

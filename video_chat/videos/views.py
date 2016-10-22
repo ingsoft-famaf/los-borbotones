@@ -16,9 +16,10 @@ class SearchView(generic.ListView):
 class Home(generic.TemplateView):
     template_name = 'video_chat/home.html'
 
-class Play(generic.DetailView): # TODO
+class Play(generic.DetailView):
     template_name = 'videos/play.html'
     model = Video
+    # TODO ultimo video visto
 
 def Upload(request):
     if request.method == 'POST':

@@ -1,11 +1,13 @@
 {% extends 'video_chat/base.html' %}
-
+{% load static %}
 
 {% block content %}
-        <h3>{{title}}</h3>
-        <video width="320" height="240" controls>
-          <source src="{{video.file.url}}" type="video/mp4"/><!--TODO-->
-        </video>
-        <p>{{video.description}}</p>
-
+        <link rel="stylesheet" type="text/css" href="{% static "videos/style.css" %}" />
+        <div class="video_section">
+          <h3 class="video_title">{{video.title}}</h3>
+          <video width="600" height="480" controls>
+            <source src="{{video.file.url}}" type="video/mp4"/>
+          </video>
+          <p>{{video.description}}</p>
+        </div>
 {% endblock content %}
