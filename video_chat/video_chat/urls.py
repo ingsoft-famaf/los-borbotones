@@ -25,7 +25,8 @@ urlpatterns = [
     url(r'^$', videos_views.Home.as_view(), name='home'),
     url(r'^register/$', users_views.Register, name='register'),
     url(r'^login/$', users_views.UserLogin, name='login'),
-    url(r'^profile/$', users_views.UserLogin, name='profile'),
+    url(r'^logout/$', users_views.user_logout, name='logout'),
+    url(r'^profile/(?P<pk>\d+)/$', users_views.UserProfileDetail.as_view(), name='profile'),
     url(r'^admin/', admin.site.urls),
 ]
 if settings.DEBUG is True:

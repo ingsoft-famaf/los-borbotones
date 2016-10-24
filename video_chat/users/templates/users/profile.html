@@ -1,5 +1,20 @@
-<html>
-    <body>
-
-    </body>
-</html>
+{% extends 'video_chat/base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static "users/style.css" %}" />
+    <div class="conteiner">
+        <div class="profile_info">
+            <img src="{{userprofile.picture.url}}" alt="profile picture"/>
+            <p>
+                {{userprofile.user.username}}
+            </p>
+        </div>
+        <div class="videos_list">
+            <ul>
+                {% for video in video_list %}
+                <li><a href="{% url 'videos:play' video.id %}">{{video.title}}</a></li>
+                {% endfor%}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

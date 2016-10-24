@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
+from django.views import generic
+
+from videos.models import Video
 
 # Create your views here.
 
@@ -9,10 +12,10 @@ from users.forms import UserForm, UserProfileForm
 from users.models import UserProfile
 
 def Register(request):
-    
+
     context = RequestContext(request)
     registered = False
-   
+
     if request.method == 'POST':
 
         user_form = UserForm(request.POST)
@@ -68,4 +71,18 @@ def UserLogin(request):
     else:
 
         return render(request, 'users/login.html')
-    
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')
+
+class UserProfileDetail(generic.DetailView):
+    template_name = "users/profile.html"
+    model = UserProfile
+    context_object_name = "userprofile"
+
+    def get_context_data(self, **kwargs):
+        data = super(UserProfileDetail,self).get_context_data(**kwargs)
+        data['video_list'] = Video.objects.filter(autor__gte=self.request.user)
+
+        return data

@@ -2,6 +2,8 @@
 
     {% block content %}
     <div>
-        <a href="{% url 'videos:upload' %}">Upload </a>
+        <a class="button" href="{% url 'profile' user.id %}">Profile</a>
+        <a class="button" href="{% url 'videos:upload' %}">Upload</a>
+        <a class="button" href="{% url 'logout' %}">Logout</a>
     </div>
     {% endblock content %}
