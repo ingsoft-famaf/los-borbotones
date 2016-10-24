@@ -8,7 +8,7 @@
                 <h1><a href="/">Video Chat</a></h1>
             </div>
 			<form class="buscador" action="{% url 'videos:search' %}" method="get">
-				<input type="text" name="search_key"/>
+				<input type="text" name="search_key" required/>
 				<button class="submit" type="submit">Buscar</button><!--TODO usuario o video-->
 			</form>
             <div class="content container">
@@ -16,13 +16,5 @@
 		        {% block content %}
                 {% endblock %}
             </div>
-                <li>
-					
-					<a href="{% url 'register' %}">registro </a>
-                </li>
-                <li>
-					
-					<a href="{% url 'login' %}"> login</a>
-                </li>
         </body>
     </html>

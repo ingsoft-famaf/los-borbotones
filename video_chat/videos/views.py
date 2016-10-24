@@ -1,31 +1,37 @@
 from django.shortcuts import render, redirect
 from django.views import generic
+from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from .models import Video
 from .forms import VideoForm
 
 # Create your views here.
-class SearchView(generic.ListView):
+class SearchView(LoginRequiredMixin, generic.ListView):
     template_name = 'videos/search.html'
     context_object_name = 'founded_videos'
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return Video.objects.filter(title__icontains=self.request.GET['search_key'])
+        key = self.request.GET['search_key']
+        return (Video.objects.filter(Q(title__icontains=key) | Q(description__icontains=key)).order_by('-pub_date'))
 
-class Home(generic.TemplateView):
+class Home(LoginRequiredMixin, generic.TemplateView):
     template_name = 'video_chat/home.html'
 
-class Play(generic.DetailView):
+class Play(LoginRequiredMixin, generic.DetailView):
     template_name = 'videos/play.html'
     model = Video
     # TODO ultimo video visto
 
+@login_required()
 def Upload(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            video = form.save(commit=False)
+            video.autor = request.user
+            video.save()
             return redirect('home')
     else:
         form = VideoForm()

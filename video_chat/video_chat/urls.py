@@ -23,11 +23,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^video/', include('videos.urls')),
     url(r'^$', videos_views.Home.as_view(), name='home'),
-    url(r'^uploads/form/$', videos_views.Upload, name='upload'),
-    url(r'^admin/', admin.site.urls),
-	url(r'^register/$', users_views.Register, name='register'),
+    url(r'^register/$', users_views.Register, name='register'),
     url(r'^login/$', users_views.UserLogin, name='login'),
     url(r'^profile/$', users_views.UserLogin, name='profile'),
+    url(r'^admin/', admin.site.urls),
 ]
 if settings.DEBUG is True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

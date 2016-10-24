@@ -59,14 +59,13 @@ def UserLogin(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect('https://www.google.com.ar/')
+                return redirect('home')#TODO Login_redirect / next
             else:
                 return HttpResponse("Your account is disabled.")
         else:
-           
             print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, 'users/login.html', {'error_message': "The user or password is incorrect"})
     else:
 
-        return render(request, 'users/login.html', {})
+        return render(request, 'users/login.html')
     
