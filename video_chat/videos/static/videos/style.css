@@ -21,3 +21,14 @@ div.video_section{
 body {
     background-color: #1a1a1a;
 }
+
+li.contact {
+    color: white;
+}
+
+h3.tittle {
+    text-align:left;
+    color: red;
+    font-size: 40px;
+    font-style: italic;
+}

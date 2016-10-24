@@ -7,3 +7,8 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
         fields = ('title','description', 'file', )
+
+	class Media:
+		css = {
+			'all': ('style.css',)
+		}
