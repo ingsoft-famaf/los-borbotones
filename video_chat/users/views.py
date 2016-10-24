@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
 
+from .loginmailorusername import authenticatemailoruser
 from videos.models import Video
 
 # Create your views here.
@@ -59,7 +60,7 @@ def UserLogin(request):
         username = request.POST['username']
         password = request.POST['password']
 
-        user = authenticate(username=username, password=password)
+        user = authenticatemailoruser(self=request, username=username, password=password)
 
         if user:
             if user.is_active:
@@ -67,7 +68,7 @@ def UserLogin(request):
                 return redirect('home')#TODO Login_redirect / next
             else:
                 return HttpResponse("Your account is disabled.")
-        else:
+        elif None:
             print "Invalid login details: {0}, {1}".format(username, password)
             return render(request, 'users/login.html', {'error_message': "The user or password is incorrect"})
     else:
