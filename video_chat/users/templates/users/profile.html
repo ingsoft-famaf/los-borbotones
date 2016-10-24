@@ -4,15 +4,33 @@
     <link rel="stylesheet" type="text/css" href="{% static "users/style.css" %}" />
     <div class="conteiner">
         <div class="profile_info">
+            {% if userprofile.picture %}
             <img src="{{userprofile.picture.url}}" alt="profile picture"/>
+            {% else %}
+            <img src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
+            {% endif %}
             <p>
                 {{userprofile.user.username}}
+            </p>
+            <p>
+                {{user.pk}}
+            </p>
+            <p>
+                {{profile_pk}}
             </p>
         </div>
         <div class="videos_list">
             <ul>
                 {% for video in video_list %}
-                <li><a href="{% url 'videos:play' video.id %}">{{video.title}}</a></li>
+                <li>
+                    <a href="{% url 'videos:play' video.id %}">{{video.title}}</a>
+
+                    {% ifequal user.pk profile_pk %}
+                        <p>
+                            Propietario
+                        </p>
+                    {% endifequal %}
+                </li>
                 {% endfor%}
             </ul>
         </div>

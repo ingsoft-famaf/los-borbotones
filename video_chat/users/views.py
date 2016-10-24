@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
 
@@ -71,18 +73,20 @@ def UserLogin(request):
     else:
 
         return render(request, 'users/login.html')
-
+@login_required()
 def user_logout(request):
     logout(request)
     return redirect('/')
 
-class UserProfileDetail(generic.DetailView):
+class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
     template_name = "users/profile.html"
     model = UserProfile
     context_object_name = "userprofile"
 
     def get_context_data(self, **kwargs):
         data = super(UserProfileDetail,self).get_context_data(**kwargs)
-        data['video_list'] = Video.objects.filter(autor__gte=self.request.user)
-
+        profile_pk = self.kwargs['pk']
+        current_profile = UserProfile.objects.get(pk=profile_pk)
+        data['video_list'] = current_profile.user.video_set.all()
+        data['profile_pk'] = int(profile_pk)
         return data
