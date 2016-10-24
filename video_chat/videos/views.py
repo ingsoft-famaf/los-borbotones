@@ -3,6 +3,7 @@ from django.views import generic
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from .models import Video
 from .forms import VideoForm
@@ -32,7 +33,7 @@ def Upload(request):
             video = form.save(commit=False)
             video.autor = request.user
             video.save()
-            return redirect('home')
+            return HttpResponse('<script type="text/javascript">window.close();</script>')
     else:
         form = VideoForm()
     return render(request, 'videos/upload.html', {
