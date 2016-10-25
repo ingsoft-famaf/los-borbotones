@@ -10,6 +10,8 @@
             </li>
         {% endfor %}
         </ul>
+    {% elif error_message %}
+        <p>{{ error_message }}</p>
     {% else %}
         <p>No videos found.</p>
     {% endif %}

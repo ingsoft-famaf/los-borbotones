@@ -1,0 +1,25 @@
+{% extends 'video_chat/base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static "users/style.css" %}" />
+    {% if founded_users %}
+        <ul>
+        {% for userprofile in founded_users %}
+            <li>
+            {% if userprofile.picture %}
+                <img src="{{userprofile.picture.url}}" alt="profile picture"/>
+            {% else %}
+                <img src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
+            {% endif %}
+            <a href="{% url 'profile' userprofile.id  %}">{{ userprofile.user.username }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% elif error_message %}
+        <p>{{ error_message }}</p>
+    {% else %}
+        <p>No videos found.</p>
+    {% endif %}
+
+{% endblock content %}

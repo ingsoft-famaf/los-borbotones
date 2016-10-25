@@ -10,7 +10,7 @@ from .models import Video
 from .forms import VideoForm
 
 # Create your views here.
-class SearchView(LoginRequiredMixin, generic.ListView):
+class SearchVideo(LoginRequiredMixin, generic.ListView):
     template_name = 'videos/search.html'
     context_object_name = 'founded_videos'
 
@@ -18,13 +18,16 @@ class SearchView(LoginRequiredMixin, generic.ListView):
         key = self.request.GET['search_key']
         return (Video.objects.filter(Q(title__icontains=key) | Q(description__icontains=key)).order_by('-pub_date'))
 
+
 class Home(LoginRequiredMixin, generic.TemplateView):
     template_name = 'video_chat/home.html'
+
 
 class Play(LoginRequiredMixin, generic.DetailView):
     template_name = 'videos/play.html'
     model = Video
     # TODO ultimo video visto
+
 
 @login_required()
 def Upload(request):

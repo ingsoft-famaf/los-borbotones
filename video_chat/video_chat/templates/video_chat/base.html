@@ -7,7 +7,11 @@
             <div class="page-header">
                 <h1><a href="/">Video Chat</a></h1>
             </div>
-			<form class="buscador" action="{% url 'videos:search' %}" method="get">
+			<form class="buscador" action="{% url 'redirect_search' %}" method="get">
+                <input type="radio" name="search" value="usuarios" required/>
+                <label>Usuarios</label>
+                <input type="radio" name="search" value="videos"/>
+                <label>Videos</label><br />
 				<input type="text" name="search_key" required/>
 				<button class="submit" type="submit">Buscar</button><!--TODO usuario o video-->
 			</form>

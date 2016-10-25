@@ -14,8 +14,8 @@ from videos.models import Video
 from users.forms import UserForm, UserProfileForm
 from users.models import UserProfile
 
-def Register(request):
 
+def Register(request):
     context = RequestContext(request)
     registered = False
 
@@ -51,8 +51,8 @@ def Register(request):
             'users/register.html',
             {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
-def UserLogin(request):
 
+def UserLogin(request):
     context = RequestContext(request)
 
     if request.method == 'POST':
@@ -73,10 +73,13 @@ def UserLogin(request):
     else:
 
         return render(request, 'users/login.html')
+
+
 @login_required()
 def user_logout(request):
     logout(request)
     return redirect('/')
+
 
 class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
     template_name = "users/profile.html"
@@ -90,3 +93,12 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
         data['video_list'] = current_profile.user.video_set.all()
         data['profile_pk'] = int(profile_pk)
         return data
+
+
+class SearchUser(LoginRequiredMixin, generic.ListView):
+    template_name = 'users/search.html'
+    context_object_name = 'founded_users'
+
+    def get_queryset(self):
+        key = self.request.GET['search_key']
+        return(UserProfile.objects.filter(user__username__icontains = key))

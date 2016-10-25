@@ -16,12 +16,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
+from video_chat import views as project_views
 from videos import views as videos_views
 from users import views as users_views
 from django.conf.urls.static import static
 
 urlpatterns = [
+    url(r'^search/$', project_views.RedirectSearch.as_view(), name='redirect_search'),
     url(r'^video/', include('videos.urls')),
+    url(r'^user/', include('users.urls')),
     url(r'^$', videos_views.Home.as_view(), name='home'),
     url(r'^register/$', users_views.Register, name='register'),
     url(r'^login/$', users_views.UserLogin, name='login'),
