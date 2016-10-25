@@ -3,7 +3,7 @@ from django.views import generic
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse
 
 from .models import Video
@@ -41,7 +41,16 @@ def Upload(request):
         'form': form
     })
 
-def delete(request, video_id):
-    video = Video.objects.get(id=video_id)
-    video.delete()
-    return HttpResponseRedirect('/profile/'+str(request.user.id)+'/')
+
+class Delete(LoginRequiredMixin, generic.DeleteView):
+    model = Video
+    template_name = 'videos/delete_video.html'
+
+    def get_object(self, **kwargs):
+        video = super(generic.DeleteView, self).get_object()
+        if not video.autor == self.request.user:
+            raise Http404
+        return video
+
+    def get_success_url(self):
+        return reverse('profile', args = [self.request.user.id])

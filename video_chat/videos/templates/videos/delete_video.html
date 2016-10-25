@@ -1,0 +1,16 @@
+{% extends 'video_chat/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Delete Contact</h1>
+
+<p>¿Esta seguro que desea eliminar el video "{{ video.title }}"?</p>
+
+<form action="{% url 'videos:delete' video.id %}" method="POST">
+  {% csrf_token %}
+
+  <input type="submit" value="Yes, delete." />
+  <a href="{% url 'profile' user.id %}"><input type="button" value="No, cancel."></a>
+</form>
+{% endblock %}

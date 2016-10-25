@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^search/$', views.SearchView.as_view(), name='search'),
     url(r'^play/(?P<pk>\d+)/$', views.Play.as_view(), name='play'), #TODO
     url(r'^upload/$', views.Upload, name='upload'),
-	url(r'^(?P<video_id>[0-9]+)/delete/$', views.delete, name='delete'),
+	url(r'^(?P<pk>\d+)/delete/$', views.Delete.as_view(), name='delete'),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
