@@ -68,8 +68,7 @@ def UserLogin(request):
                 return redirect('home')#TODO Login_redirect / next
             else:
                 return HttpResponse("Your account is disabled.")
-        elif None:
-            print "Invalid login details: {0}, {1}".format(username, password)
+        else:
             return render(request, 'users/login.html', {'error_message': "The user or password is incorrect"})
     else:
 
