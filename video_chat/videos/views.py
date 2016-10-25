@@ -3,7 +3,8 @@ from django.views import generic
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 
 from .models import Video
 from .forms import VideoForm
@@ -39,3 +40,8 @@ def Upload(request):
     return render(request, 'videos/upload.html', {
         'form': form
     })
+
+def delete(request, video_id):
+    video = Video.objects.get(id=video_id)
+    video.delete()
+    return HttpResponseRedirect('/profile/'+str(request.user.id)+'/')

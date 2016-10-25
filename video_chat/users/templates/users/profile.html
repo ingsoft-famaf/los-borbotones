@@ -12,23 +12,16 @@
             <p>
                 {{userprofile.user.username}}
             </p>
-            <p>
-                {{user.pk}}
-            </p>
-            <p>
-                {{profile_pk}}
-            </p>
         </div>
         <div class="videos_list">
             <ul>
                 {% for video in video_list %}
                 <li>
                     <a href="{% url 'videos:play' video.id %}">{{video.title}}</a>
+                    <a href="{% url 'videos:delete' video.id %}">borrar</a>
+
 
                     {% ifequal user.pk profile_pk %}
-                        <p>
-                            Propietario
-                        </p>
                     {% endifequal %}
                 </li>
                 {% endfor%}
