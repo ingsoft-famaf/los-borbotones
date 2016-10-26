@@ -1,9 +1,4 @@
 {% extends 'video_chat/base.html' %}
 
-    {% block content %}
-    <div>
-        <a class="button" href="{% url 'profile' user.id %}">Profile</a>
-        <a href="javascript:window.open('{% url 'videos:upload' %}','mypopuptitle','width=600,height=400');void(0)"><button>Upload Video</button></a>
-        <a class="button" href="{% url 'logout' %}">Logout</a>
-    </div>
-    {% endblock content %}
+{% block content %}
+{% endblock content %}
