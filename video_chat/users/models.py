@@ -14,6 +14,3 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
-class Friends(models.Model):
-	to_user = models.ForeignKey(UserProfile, related_name='to_user')
-	from_user = models.ForeignKey(UserProfile, related_name='from_user')

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
@@ -12,7 +13,7 @@ from videos.models import Video
 # Create your views here.
 
 from users.forms import UserForm, UserProfileForm
-from users.models import UserProfile, Friends
+from users.models import UserProfile
 
 
 def Register(request):
@@ -102,21 +103,17 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
         key = self.request.GET['search_key']
         return(UserProfile.objects.filter(user__username__icontains = key))
 
-def AddFriend(LoginRequiredMixin, request):
-    template_name = 'users/addfriends.html'
-
-    model_userprofile = UserProfile
-    model_friend = Friends(request.POST)
+@login_required
+def AddFriend(request):
+#http://stackoverflow.com/questions/11336548/django-taking-values-from-post-request
+#https://www.caktusgroup.com/blog/2009/08/14/creating-recursive-symmetrical-many-to-many-relationships-in-django/
+#|http://charlesleifer.com/blog/self-referencing-many-many-through/
+    request.POST.get('iduser')
 
     if request.method == 'POST':
-
-        model_friend.to_user = UserProfile
-        model_friend.from_user = UserProfile
-
-        model_friend.save()
-
-        model_userprofile.Friends = model_friend
-
-        model_userprofile.Friends.save()
+        friend = User.objects.get( pk = iduser)
+        request.user.userprofile.friend.add(friend.userprofile)   
 
     return redirect ('home')
+
+
