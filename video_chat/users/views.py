@@ -102,3 +102,8 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         key = self.request.GET['search_key']
         return(UserProfile.objects.filter(user__username__icontains = key))
+
+class AddFriend(LoginRequiredMixin, request):
+    template_name = 'users/addfriends.html'
+
+    return redirect ('home')
