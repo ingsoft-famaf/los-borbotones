@@ -12,7 +12,7 @@ from videos.models import Video
 # Create your views here.
 
 from users.forms import UserForm, UserProfileForm
-from users.models import UserProfile
+from users.models import UserProfile, Friends
 
 
 def Register(request):
@@ -75,8 +75,7 @@ def UserLogin(request):
         return render(request, 'users/login.html')
 
 
-@login_required()
-def user_logout(request):
+def user_logout(LoginRequiredMixin, request):
     logout(request)
     return redirect('/')
 
@@ -103,7 +102,21 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
         key = self.request.GET['search_key']
         return(UserProfile.objects.filter(user__username__icontains = key))
 
-class AddFriend(LoginRequiredMixin, request):
+def AddFriend(LoginRequiredMixin, request):
     template_name = 'users/addfriends.html'
+
+    model_userprofile = UserProfile
+    model_friend = Friends(request.POST)
+
+    if request.method == 'POST':
+
+        model_friend.to_user = UserProfile
+        model_friend.from_user = UserProfile
+
+        model_friend.save()
+
+        model_userprofile.Friends = model_friend
+
+        model_userprofile.Friends.save()
 
     return redirect ('home')

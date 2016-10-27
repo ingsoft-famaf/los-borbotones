@@ -1,10 +1,9 @@
 import os
 from django.core.exceptions import ValidationError
 
-
-def validate_file_extension(value):
+def ValidateImageExtesion(value):
 
     ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
-    valid_extensions = ['.mp4','.avi','.mpeg','.mov','.wmv','.flv']
+    valid_extensions = ['.bmp','.jpg','.jgeg','.png']
     if not ext.lower() in valid_extensions:
         raise ValidationError(u'Tipo de archivo invalido.')

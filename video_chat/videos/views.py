@@ -29,8 +29,7 @@ class Play(LoginRequiredMixin, generic.DetailView):
     # TODO ultimo video visto
 
 
-@login_required()
-def Upload(request):
+def Upload(LoginRequiredMixin, request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
