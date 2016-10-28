@@ -1,16 +1,24 @@
+
+{% extends 'video_chat/base.html' %}
 {% load static %}
 
+
 {% block content %}
-	<link rel="stylesheet" type="text/css" href="{% static "videos/style.css" %}" />
-	<h3 class="tittle">Upload a video</h3>
-    <form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-		
-        <li id="tittle" class="contact">Tittle {{ form.title }}</li>
-        <li id="description" class="contact">Description {{ form.description }}</li>
-         <li id="file" class="contact">File {{ form.file }}</li>
-        <button type="submit" >Upload</button>
-    </form>
-    <a onclick="self.close()">
-	<input type="button" value="Cancel, Close this window" onclick="self.close()">
+  <h3 class="title">Subir un video</h3>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_title">Titulo</label>
+      {{form.title}}
+    </div>
+    <div class="form-group">
+      <label for="id_description">Descripción del video</label>
+      {{form.description}}
+    </div>
+    <div class="form-group">
+      <label for="id_file">Video</label>
+      {{form.file}}
+    </div>
+    <button type="submit" class="btn btn-success">Subir video</button>
+  </form>
 {% endblock %}
