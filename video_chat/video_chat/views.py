@@ -1,20 +1,17 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.base import RedirectView
-from django.urls import reverse
 from django.http import Http404
+from videos.views import SearchVideo
+from django.contrib.auth.decorators import login_required
+from users.views import SearchUser
 
 
-class RedirectSearch(LoginRequiredMixin, RedirectView):
+@login_required
+def RedirectSearch(request):
+    search = request.GET['search']
+    search_key = request.GET['search_key']
 
-    def get_redirect_url(self, *args, **kwargs):
-        search = self.request.GET['search']
-        search_key = self.request.GET['search_key']
-
-        if (search == 'usuarios'):
-            url = reverse('users:search') + "?search_key=" + search_key
-        elif (search == 'videos'):
-            url = reverse('videos:search') + "?search_key=" + search_key
-        else:
-            raise Http404
-
-        return url 
+    if (search == 'users'):
+        return SearchUser.as_view()(request)
+    elif (search == 'videos'):
+        return SearchVideo.as_view()(request)
+    else:
+        raise Http404

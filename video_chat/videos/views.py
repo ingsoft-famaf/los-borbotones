@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.urls import reverse
 
 from .models import Video
-from .forms import VideoForm
+from .forms import UploadForm
 
 # Create your views here.
 class SearchVideo(LoginRequiredMixin, generic.ListView):
@@ -29,20 +29,18 @@ class Play(LoginRequiredMixin, generic.DetailView):
     # TODO ultimo video visto
 
 
-@login_required()
-def Upload(request):
-    if request.method == 'POST':
-        form = VideoForm(request.POST, request.FILES)
-        if form.is_valid():
-            video = form.save(commit=False)
-            video.autor = request.user
-            video.save()
-            return HttpResponse('<script type="text/javascript">window.close();</script>')
-    else:
-        form = VideoForm()
-    return render(request, 'videos/upload.html', {
-        'form': form
-    })
+class Upload(LoginRequiredMixin, generic.CreateView):
+    model = Video
+    form_class = UploadForm
+    template_name = 'videos/upload.html'
+    
+    def get_success_url(self):
+        return reverse('profile', args = [self.request.user.id])
+
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        return super(Upload, self).form_valid(form)
+
 
 
 class Delete(LoginRequiredMixin, generic.DeleteView):
