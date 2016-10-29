@@ -22,7 +22,7 @@ from users import views as users_views
 from django.conf.urls.static import static
 
 urlpatterns = [
-    url(r'^search/$', project_views.RedirectSearch.as_view(), name='redirect_search'),
+    url(r'^search/$', project_views.RedirectSearch, name='redirect_search'),
     url(r'^video/', include('videos.urls')),
     url(r'^user/', include('users.urls')),
     url(r'^$', videos_views.Home.as_view(), name='home'),
