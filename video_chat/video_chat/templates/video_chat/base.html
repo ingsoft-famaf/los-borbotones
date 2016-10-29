@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -28,17 +28,24 @@
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <form class="navbar-form navbar-left" action="{% url 'redirect_search' %}" method="get">
-          <div class="form-group">
-            <div class="radio">              
-              <label class="navbar-text"><input type="radio" name="search" value="users" required/>Usuarios</label>
-              <label class="navbar-text"><input type="radio" name="search" value="videos"/>Videos</label>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <div style="margin: 0px auto; text-align:center; max-width: 400px;">
+          <form class="navbar-form navbar-left" id="search_form" action="{% url 'videos:search' %}" method="get">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button id="search_btn" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Videos <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a id="search_videos" data-search="{% url 'videos:search' %}">Videos</a></li>
+                  <li><a id="search_users" data-search="{% url 'users:search' %}">Usuarios</a></li>
+                </ul>
+              </div>
+              <input type="text" class="form-control" placeholder="Busqueda.." name="search_key" required>
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+              </span>
             </div>
-            <input type="text" name="search_key" placeholder="Busqueda.." required/>
-          </div>
-          <button type="submit" class="btn btn-default">Buscar</button>
-        </form>
+          </form>
+        </div>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> {{ user.username }} <span class="caret"></span></a>
@@ -65,6 +72,19 @@
   {% endblock body %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $("#search_videos").click(function(){
+      $("#search_btn").html($(this).text()+" <span class=\"caret\"></span>");
+      $("#search_btn").val($(this).text());
+      $('#search_form').attr('action', $(this).data('search'));
+    });
+
+    $("#search_users").click(function(){
+      $("#search_btn").html($(this).text()+" <span class=\"caret\"></span>");
+      $("#search_btn").val($(this).text());
+      $('#search_form').attr('action', $(this).data('search'));
+    });
+  </script>
   {% block extra_script %} {% endblock extra_script %}
 </body>
 </html>
