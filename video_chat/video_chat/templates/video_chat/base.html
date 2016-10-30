@@ -34,7 +34,7 @@
             <div class="input-group">
               <div class="input-group-btn">
                 <button id="search_btn" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Videos <span class="caret"></span></button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="min-width: 20px; text-align: center">
                   <li><a id="search_videos" data-search="{% url 'videos:search' %}">Videos</a></li>
                   <li><a id="search_users" data-search="{% url 'users:search' %}">Usuarios</a></li>
                 </ul>
