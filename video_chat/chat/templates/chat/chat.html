@@ -1,9 +1,50 @@
 
 <div class="divScroll">
 
-    </div>
-<form class="send" action="" method="post">
-    {% csrf_token %}
-    <input type="text" name="message" required>
-    <button type="submit" name="button">Enviar</button>
-</form>
+</div>
+    <form method="post" id="send-message">{% csrf_token %}
+        <input type="text" id="message"/>
+        <input type='submit' value='Enviar'/>
+    </form>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#send-message').submit(function (event) {
+            var csrftoken = getCookie('csrftoken');
+            var message = $('#message').val()
+            $('#message').val('');
+            $.ajax({
+                    type : "POST",
+                    url : "/chat/send_message/",
+                    data : {
+                            csrfmiddlewaretoken : csrftoken,
+                            message : message,
+                        },
+
+            });
+            return false;
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+</script>
