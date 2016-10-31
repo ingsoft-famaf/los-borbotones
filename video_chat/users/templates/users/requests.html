@@ -3,9 +3,9 @@
 
 
 {% block content %}
-{% if founded_requests %}
+{% if requests_list %}
 <ul>
-  {% for request in founded_requests %}
+  {% for request in requests_list %}
   <li>
     <a href="{% url 'profile' request.sender.pk %}">{{request.sender.username}}</a>
     <form method="POST" action="{% url 'users:accept_request' %}">

@@ -13,13 +13,22 @@
     <img src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
   {% endif %}
   <p>{{userprofile.user.username}}</p>
-  {% if can_send %}
-    <form action="{% url 'users:send_request' %}" method="POST">
+  {% if is_friend %}
+    <form method="POST" action="{% url 'users:delete_friend' %}">
       {% csrf_token %}
-      <button type="submit" name="friend_pk" value="{{ profile_pk }}" class="btn btn-primary">
-        Enviar solicitud
+      <button type="submit" name="friend_pk" value="{{ userprofile.pk }}" class="btn btn-danger">
+        Eliminar amigo
       </button>
     </form>
+  {% else %}
+    {% if can_send %}
+      <form action="{% url 'users:send_request' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" name="friend_pk" value="{{ profile_pk }}" class="btn btn-primary">
+          Enviar solicitud
+        </button>
+      </form>
+    {% endif %}
   {% endif %}
 </div>
 <div class="videos_list">

@@ -102,6 +102,12 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
             data['can_send'] = True
         else:
             data['can_send'] = False
+
+        if current_profile in user.userprofile.friend.all():
+            data['is_friend'] = True
+        else:
+            data['is_friend'] = False
+            
         return data
 
 
@@ -115,7 +121,6 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def SendRequest(request):
-    #Comprobar que no existe 
     user = request.user
     if request.method == 'POST':
         friend_pk = request.POST['friend_pk']
@@ -126,13 +131,16 @@ def SendRequest(request):
 
 @login_required
 def AcceptRequest(request):
-    ## TODO comprobar que existe la solicitud y eliminar 
     userprofile = request.user.userprofile
     if request.method == 'POST':
         friend_pk = request.POST['friend_pk']
         friend = UserProfile.objects.get(pk=friend_pk)
-        if not userprofile.friend.filter(pk=friend_pk).exists():
-            userprofile.friend.add(friend)
+
+        qs = FriendRequest.objects.filter(sender=friend.user, receiver=userprofile.user)
+        if qs.exists():
+            qs.delete()
+            if not userprofile.friend.filter(pk=friend_pk).exists():
+                userprofile.friend.add(friend)
     return redirect('users:requests')
 
 @login_required
@@ -155,7 +163,15 @@ def RemoveFriend(request):
 class ViewRequests(LoginRequiredMixin, generic.ListView):
     model = FriendRequest
     template_name = 'users/requests.html'
-    context_object_name = 'founded_requests'
+    context_object_name = 'requests_list'
 
     def get_queryset(self):
         return(self.request.user.receiver.all())
+
+class ViewFriends(LoginRequiredMixin, generic.ListView):
+    model = UserProfile
+    template_name = 'users/friends_list.html'
+    context_object_name = 'friends_list'
+
+    def get_queryset(self):
+        return(self.request.user.userprofile.friend.all())

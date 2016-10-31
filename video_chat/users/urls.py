@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^requests/$', views.ViewRequests.as_view(), name='requests'),
     url(r'^accept/$', views.AcceptRequest, name='accept_request'),
     url(r'^decline/$', views.DeleteRequest, name='decline_request'),
+    url(r'^delete/$', views.RemoveFriend, name='delete_friend'),
+    url(r'^friends/$', views.ViewFriends.as_view(), name='friends'),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

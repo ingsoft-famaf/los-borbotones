@@ -1,0 +1,32 @@
+{% extends 'video_chat/base.html' %}
+{% load static %}
+
+{% block extra_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% if friends_list %}
+<ul>
+  {% for friend in friends_list %}
+  <li>
+    {% if friend.picture %}
+    <img src="{{friend.picture.url}}" alt="profile picture"/>
+    {% else %}
+    <img src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
+    {% endif %}
+    <a href="{% url 'profile' friend.user.id  %}">{{ friend.user.username }}</a>
+    <form method="POST" action="{% url 'users:delete_friend' %}">
+      {% csrf_token %}
+      <button type="submit" name="friend_pk" value="{{ friend.pk }}" class="btn btn-danger">
+        Eliminar amigo
+      </button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>Usted no tiene amigos todavía.</p>
+{% endif %}
+
+{% endblock content %}
