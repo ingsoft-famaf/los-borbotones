@@ -96,9 +96,9 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
         data['video_list'] = current_profile.user.video_set.all()
         data['profile_pk'] = int(profile_pk)
 
-        if (profile_pk != user.pk) and (not
+        if ((current_profile.pk != user.pk) and (not
             FriendRequest.objects.filter(Q(sender=user, receiver=current_profile.user) |
-                Q(sender=current_profile.user, receiver=user)).exists()):
+                Q(sender=current_profile.user, receiver=user)).exists())):
             data['can_send'] = True
         else:
             data['can_send'] = False
@@ -114,26 +114,6 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
         return(UserProfile.objects.filter(user__username__icontains = key))
 
 @login_required
-def AddFriend(request, friend_id):
-    ## TODO comprobar que existe la solicitud y eliminar 
-    userprofile = request.user.userprofile
-    if request.method == 'POST':
-        friend_pk = request.POST['friend_pk']
-        friend = UserProfile.objects.get(pk=friend_pk)
-        if not userprofile.friend.filter(pk=friend_pk).exists():
-            userprofile.friend.add(friend)
-    return redirect('home')
-
-@login_required
-def RemoveFriend(request, friend_id):
-    userprofile = request.user.userprofile
-    if request.method == 'POST':
-        friend_pk = request.POST['friend_pk']
-        friend = UserProfile.objects.get(pk=friend_pk)
-        userprofile.friend.remove(friend)
-    return redirect('home')
-
-@login_required
 def SendRequest(request):
     #Comprobar que no existe 
     user = request.user
@@ -143,3 +123,39 @@ def SendRequest(request):
         if not FriendRequest.objects.filter(sender=friend, receiver=user).exists():
             FriendRequest.objects.get_or_create(sender=user, receiver=friend)
     return redirect('home')
+
+@login_required
+def AcceptRequest(request):
+    ## TODO comprobar que existe la solicitud y eliminar 
+    userprofile = request.user.userprofile
+    if request.method == 'POST':
+        friend_pk = request.POST['friend_pk']
+        friend = UserProfile.objects.get(pk=friend_pk)
+        if not userprofile.friend.filter(pk=friend_pk).exists():
+            userprofile.friend.add(friend)
+    return redirect('users:requests')
+
+@login_required
+def DeleteRequest(request):
+    if request.method == 'POST' :
+        friend_request = FriendRequest.objects.get(pk = request.POST['friend_request'])
+        if friend_request.receiver == request.user :
+            friend_request.delete()
+    return redirect('users:requests')
+
+@login_required
+def RemoveFriend(request):
+    userprofile = request.user.userprofile
+    if request.method == 'POST':
+        friend_pk = request.POST['friend_pk']
+        friend = UserProfile.objects.get(pk=friend_pk)
+        userprofile.friend.remove(friend)
+    return redirect('home')
+
+class ViewRequests(LoginRequiredMixin, generic.ListView):
+    model = FriendRequest
+    template_name = 'users/requests.html'
+    context_object_name = 'founded_requests'
+
+    def get_queryset(self):
+        return(self.request.user.receiver.all())

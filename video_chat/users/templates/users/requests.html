@@ -1,0 +1,30 @@
+{% extends 'video_chat/base.html' %}
+{% load static %}
+
+
+{% block content %}
+{% if founded_requests %}
+<ul>
+  {% for request in founded_requests %}
+  <li>
+    <a href="{% url 'profile' request.sender.pk %}">{{request.sender.username}}</a>
+    <form method="POST" action="{% url 'users:accept_request' %}">
+      {% csrf_token %}
+      <button type="submit" name="friend_pk" value="{{ request.sender.pk }}" class="btn btn-default">
+        Aceptar solicitud.
+      </button>
+    </form>
+    <form method="POST" action="{% url 'users:decline_request' %}">
+      {% csrf_token %}
+      <button type="submit" name="friend_request" value="{{ request.pk }}" class="btn btn-default">
+        Cancelar solicitud.
+      </button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>No posee solicitudes de amistad sin responder.</p>
+{% endif %}
+
+{% endblock content %}
