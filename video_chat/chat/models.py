@@ -13,13 +13,16 @@ class ChatRoom(models.Model):
         )
 
 
+
 class Message(models.Model):
     chat_room = models.ForeignKey(
         ChatRoom,
+        null=True
         #on_delete=models.SET_DEFAULT,
         )
     author = models.ForeignKey(
         UserProfile,
+        null=True
         #on_delete=models.SET_DEFAULT,
     )
     content_text = models.TextField(max_length = 300)

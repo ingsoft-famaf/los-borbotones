@@ -4,5 +4,6 @@ from . import views
 app_name = 'chat'
 
 urlpatterns = [
-    url(r'^$', views.ChatView.as_view(), name='chat'),
+    url(r'chat/$', views.create_message, name='chat'),
+    url(r'messages/$', views.message_set, name='message_set')
     ]

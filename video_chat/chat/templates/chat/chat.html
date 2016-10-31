@@ -1,9 +1,9 @@
 
-<div class="divScroll">
+<div id="chat_window" class="divScroll">
 
 </div>
     <form method="post" id="send-message">{% csrf_token %}
-        <input type="text" id="message"/>
+        <input id="id_content_text" type="input-text">
         <input type='submit' value='Enviar'/>
     </form>
 
@@ -14,20 +14,39 @@
     $(document).ready(function(){
         $('#send-message').submit(function (event) {
             var csrftoken = getCookie('csrftoken');
-            var message = $('#message').val()
-            $('#message').val('');
+            var message = $('#id_content_text').val();
+            $('#id_content_text').val('');
             $.ajax({
                     type : "POST",
-                    url : "/chat/send_message/",
+                    url : "/chat/chat/",
                     data : {
                             csrfmiddlewaretoken : csrftoken,
-                            message : message,
+                            chat_id : {{video.chatroom.id}},
+                            content_text : message,
                         },
 
             });
             return false;
         });
     });
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function() {
+            setInterval(function() {
+                var ml =$.ajax({
+                    type: "GET",
+                    url:"/chat/messages"
+                });
+                $('#chat_window').text(
+                    var i = ml['messages_in_chat']
+                    for
+                        "<p></p>"
+                    }
+                );
+            }, 300);
+        });
+
 </script>
 <script type="text/javascript">
 
