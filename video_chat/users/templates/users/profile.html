@@ -1,43 +1,37 @@
 {% extends 'video_chat/base.html' %}
 {% load static %}
+
+{% block extra_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{% static 'users/style.css' %}" />
+{% endblock %}
+
 {% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static "users/style.css" %}" />
-    <div class="conteiner">
-        <div class="profile_info">
-            {% if userprofile.picture %}
-            <img src="{{userprofile.picture.url}}" alt="profile picture"/>
-            {% else %}
-            <img src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
-            {% endif %}
-            <p>
-                {{userprofile.user.username}}
-            </p>
-        </div>
-        <div class="videos_list">
-            <ul>
-                {% for video in video_list %}
-                <li>
-                    <a href="{% url 'videos:play' video.id %}">{{video.title}}</a>
-                    {% ifequal user.pk profile_pk %}
-                        <a href="{% url 'videos:delete' video.id %}">borrar</a>
-                    {% endifequal %}
-                </li>
-                {% endfor%}
-            </ul>
-        </div>
-        <div class="friends_list">
-            <ul>
-                {% for friends in friends_list %}
-                <li>
-                    <a href="{% url 'profile' friends.id %}">{{friends.user.username}}</a>
-                    {% ifequal user.pk profile_pk %}
-                        <form action="" method="GET">
-                <a role="button" name='key' value='userprofile' href="{% url 'profile' userprofile.id %}">borrar amigo</a>
-            </form>
-                    {% endifequal %}
-                </li>
-                {% endfor%}
-            </ul>
-        </div>
-    </div>
+<div class="profile_info">
+  {% if userprofile.picture %}
+    <img src="{{userprofile.picture.url}}" alt="profile picture"/>
+  {% else %}
+    <img src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
+  {% endif %}
+  <p>{{userprofile.user.username}}</p>
+  {% if can_send %}
+    <form action="{% url 'users:send_request' %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" name="friend_pk" value="{{ profile_pk }}" class="btn btn-primary">
+        Enviar solicitud
+      </button>
+    </form>
+  {% endif %}
+</div>
+<div class="videos_list">
+  <ul>
+    {% for video in video_list %}
+    <li>
+      <a href="{% url 'videos:play' video.id %}">{{video.title}}</a>
+      {% ifequal user.pk profile_pk %}
+      <a href="{% url 'videos:delete' video.id %}">borrar</a>
+      {% endifequal %}
+    </li>
+    {% endfor%}
+  </ul>
+</div>
 {% endblock content %}

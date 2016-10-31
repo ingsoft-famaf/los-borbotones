@@ -14,3 +14,10 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="senders")
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="receivers")
+    def __str__(self):
+        return "From: {} To: {}".fromat(self.sender.username, self.receiver.username)
+        
+
