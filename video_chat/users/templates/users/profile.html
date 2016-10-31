@@ -25,5 +25,19 @@
                 {% endfor%}
             </ul>
         </div>
+        <div class="friends_list">
+            <ul>
+                {% for friends in friends_list %}
+                <li>
+                    <a href="{% url 'profile' friends.id %}">{{friends.user.username}}</a>
+                    {% ifequal user.pk profile_pk %}
+                        <form action="" method="GET">
+                <a role="button" name='key' value='userprofile' href="{% url 'profile' userprofile.id %}">borrar amigo</a>
+            </form>
+                    {% endifequal %}
+                </li>
+                {% endfor%}
+            </ul>
+        </div>
     </div>
 {% endblock content %}

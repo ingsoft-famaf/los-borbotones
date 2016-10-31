@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views import generic
+import datetime
 
 from .loginmailorusername import authenticatemailoruser
 from videos.models import Video
@@ -76,7 +77,8 @@ def UserLogin(request):
         return render(request, 'users/login.html')
 
 
-def user_logout(LoginRequiredMixin, request):
+@login_required
+def user_logout(request):
     logout(request)
     return redirect('/')
 
@@ -92,6 +94,7 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
         current_profile = UserProfile.objects.get(pk=profile_pk)
         data['video_list'] = current_profile.user.video_set.all()
         data['profile_pk'] = int(profile_pk)
+        data['friends_list'] = current_profile.friend.all()
         return data
 
 
@@ -104,16 +107,19 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
         return(UserProfile.objects.filter(user__username__icontains = key))
 
 @login_required
-def AddFriend(request):
-#http://stackoverflow.com/questions/11336548/django-taking-values-from-post-request
-#https://www.caktusgroup.com/blog/2009/08/14/creating-recursive-symmetrical-many-to-many-relationships-in-django/
-#|http://charlesleifer.com/blog/self-referencing-many-many-through/
-    request.POST.get('iduser')
+class AddFriend(generic.View):
 
-    if request.method == 'POST':
-        friend = User.objects.get( pk = iduser)
-        request.user.userprofile.friend.add(friend.userprofile)   
+    template_name = 'users/search.html'
 
-    return redirect ('home')
+    def get_queryset(self):
+        friend = self.request.GET['key']
+        UserProfile.user.friend.add(friend)
 
+@login_required
+class RemoveFriend(generic.View):
 
+    template_name = 'users/remove_friends.html'
+
+    def get_queryset(self):
+        friend = self.request.GET['key']
+        UserProfile.user.friend.remove(friend)

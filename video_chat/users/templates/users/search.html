@@ -13,7 +13,10 @@
                 <img src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
             {% endif %}
             <a href="{% url 'profile' userprofile.id  %}">{{ userprofile.user.username }}</a>
-            </li>
+            <form action="" method="GET">
+                <a class="btn btn-default" role="button" name='key' value='userprofile' href="{% url 'home' %}">agregar amigo</a>
+            </form>
+
         {% endfor %}
         </ul>
     {% elif error_message %}
