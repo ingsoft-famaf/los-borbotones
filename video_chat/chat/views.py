@@ -1,14 +1,15 @@
 from django.shortcuts import redirect
 from django.views import generic
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from models import ChatRoom, Message
 from users.models import UserProfile
 from videos.models import Video
 from forms import MessageForm
 # Create your views here.
-
+@login_required()
 def create_message(request):
     if request.method == 'POST':
         if request.is_ajax():
@@ -25,14 +26,17 @@ def create_message(request):
             return redirect("/")
     else:
         return redirect("/")
-
+@login_required()
 def message_set(request, pk ):
     if request.method == "GET":
         if request.is_ajax():
             current_video = Video.objects.get(pk=pk)
             data = Message.objects.filter(chat_room = current_video.chatroom).order_by('send_date')
             top = data.count()
-            bot = top - 50
+            if top-50 < 0:
+                bot = 0
+            else:
+                bot = top-50
             data = data[bot:top]
             data_txt = ""
             for sms in data:
