@@ -1,9 +1,6 @@
 {% extends 'video_chat/base.html' %}
 
 {% block content %}
-<a href="{% url 'users:requests' %}"> Solicitudes </a><br/>
-<a href="{% url 'users:friends' %}"> Mis amigos</a><br/>
-
 {% for up in friends_list %}
     <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
     <span>a visto </span>
