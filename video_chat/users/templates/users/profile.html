@@ -12,7 +12,6 @@
   {% else %}
     <img src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
   {% endif %}
-  <p>{{userprofile.user.username }} {{userprofile.last_video.title}}</p>
 
   {% if is_friend %}
     <form method="POST" action="{% url 'users:delete_friend' %}">

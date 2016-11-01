@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^search/$', project_views.RedirectSearch, name='redirect_search'),
     url(r'^video/', include('videos.urls')),
     url(r'^user/', include('users.urls')),
-    url(r'^$', videos_views.Home.as_view(), name='home'),
+    url(r'^$', project_views.Home.as_view(), name='home'),
     url(r'^register/$', users_views.Register, name='register'),
     url(r'^login/$', users_views.UserLogin, name='login'),
     url(r'^logout/$', users_views.user_logout, name='logout'),

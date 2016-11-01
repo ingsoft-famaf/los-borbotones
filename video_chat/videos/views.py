@@ -1,15 +1,13 @@
-from django.shortcuts import render, redirect
 from django.views import generic
 from django.db.models import Q
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import Http404
 from django.urls import reverse
 
 from .models import Video
 from .forms import UploadForm
-from users.models import UserProfile
+
 
 # Create your views here.
 class SearchVideo(LoginRequiredMixin, generic.ListView):
@@ -21,17 +19,13 @@ class SearchVideo(LoginRequiredMixin, generic.ListView):
         return (Video.objects.filter(Q(title__icontains=key) | Q(description__icontains=key)).order_by('-pub_date'))
 
 
-class Home(LoginRequiredMixin, generic.TemplateView):
-    template_name = 'video_chat/home.html'
-
-
 class Play(LoginRequiredMixin, generic.DetailView):
     template_name = 'videos/play.html'
     model = Video
 
     def get_object(self):
         video = super(generic.DetailView, self).get_object()
-        self.request.user.userprofile.last_video = video
+        video.userprofile_set.add(self.request.user.userprofile)
         return video
 
 
