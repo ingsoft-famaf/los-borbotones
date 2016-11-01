@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.db.models import Q
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -8,6 +9,7 @@ from django.urls import reverse
 
 from .models import Video
 from .forms import UploadForm
+from users.models import UserProfile
 
 # Create your views here.
 class SearchVideo(LoginRequiredMixin, generic.ListView):
@@ -26,7 +28,11 @@ class Home(LoginRequiredMixin, generic.TemplateView):
 class Play(LoginRequiredMixin, generic.DetailView):
     template_name = 'videos/play.html'
     model = Video
-    # TODO ultimo video visto
+
+    def get_object(self):
+        video = super(generic.DetailView, self).get_object()
+        self.request.user.userprofile.last_video = video
+        return video
 
 
 class Upload(LoginRequiredMixin, generic.CreateView):

@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from videos.models import Video
 from .validators import ValidateImageExtesion
 
 # Create your models here.
@@ -10,6 +11,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User)
     friend = models.ManyToManyField('self', symmetrical=True,  blank=True)
+    last_video = models.ForeignKey(Video, on_delete=models.SET_NULL, null=True)
     picture = models.FileField(upload_to='users/profile_images', validators = [ValidateImageExtesion], blank=True)
     def __unicode__(self):
         return self.user.username

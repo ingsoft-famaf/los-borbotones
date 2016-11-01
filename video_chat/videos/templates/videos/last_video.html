@@ -1,0 +1,21 @@
+{% extends 'video_chat/base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static "users/style.css" %}" />
+    <div class="conteiner">
+
+        <div class="friends_list">
+            <ul>
+                {% for friends in video_friends_list %}
+                <li>
+                    <a href="{% url 'profile' friends.id %}">{{friends.user.username}}</a>
+
+                    <a >{{friends.user.last_played}}</a>
+
+                   
+                </li>
+                {% endfor%}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}
