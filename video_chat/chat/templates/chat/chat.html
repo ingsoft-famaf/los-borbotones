@@ -34,17 +34,13 @@
     $(document).ready(
         function() {
             setInterval(function() {
-                var ml =$.ajax({
-                    type: "GET",
-                    url:"/chat/messages"
+                $.get( "/chat/messages/{{video.pk}}", function( data ) {
+                    $("#chat_window").html(
+                        data
+                    );
                 });
-                $('#chat_window').text(
-                    var i = ml['messages_in_chat']
-                    for
-                        "<p></p>"
-                    }
-                );
-            }, 300);
+
+            }, 500);
         });
 
 </script>

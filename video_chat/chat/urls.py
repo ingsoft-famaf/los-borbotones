@@ -5,5 +5,5 @@ app_name = 'chat'
 
 urlpatterns = [
     url(r'chat/$', views.create_message, name='chat'),
-    url(r'messages/$', views.message_set, name='message_set')
+    url(r'messages/(?P<pk>\d+)$', views.message_set, name='message_set')
     ]

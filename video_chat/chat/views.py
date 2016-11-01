@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views import generic
-from django.http import JsonResponse
-
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from models import ChatRoom, Message
@@ -27,8 +26,15 @@ def create_message(request):
     else:
         return redirect("/")
 
-def message_set(request):
+def message_set(request, pk ):
     if request.method == "GET":
         if request.is_ajax():
-            data['messages_in_chat'] = Message.objects.filter(chat_room = current_video.chatroom)
-            return JsonResponse(data)
+            current_video = Video.objects.get(pk=pk)
+            data = Message.objects.filter(chat_room = current_video.chatroom).order_by('send_date')
+            top = data.count()
+            bot = top - 50
+            data = data[bot:top]
+            data_txt = ""
+            for sms in data:
+                data_txt += "<p>" + sms.author.user.username + ": " + sms.content_text + "</p>"
+            return HttpResponse(data_txt)
