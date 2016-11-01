@@ -1,0 +1,65 @@
+
+<div id="chat_window" class="divScroll">
+
+</div>
+    <form method="post" id="send-message">{% csrf_token %}
+        <input id="id_content_text" type="input-text">
+        <input type='submit' value='Enviar'/>
+    </form>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#send-message').submit(function (event) {
+            var csrftoken = getCookie('csrftoken');
+            var message = $('#id_content_text').val();
+            $('#id_content_text').val('');
+            $.ajax({
+                    type : "POST",
+                    url : "/chat/chat/",
+                    data : {
+                            csrfmiddlewaretoken : csrftoken,
+                            chat_id : {{video.chatroom.id}},
+                            content_text : message,
+                        },
+
+            });
+            return false;
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(
+        function() {
+            setInterval(function() {
+                $.get( "/chat/messages/{{video.pk}}", function( data ) {
+                    $("#chat_window").html(
+                        data
+                    );
+                });
+
+            }, 500);
+        });
+
+</script>
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+</script>

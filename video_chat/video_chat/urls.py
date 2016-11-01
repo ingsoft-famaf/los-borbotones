@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^video/', include('videos.urls')),
     url(r'^user/', include('users.urls')),
     url(r'^$', project_views.Home.as_view(), name='home'),
+    url(r'^chat/', include('chat.urls')),
     url(r'^register/$', users_views.Register, name='register'),
     url(r'^login/$', users_views.UserLogin, name='login'),
     url(r'^logout/$', users_views.user_logout, name='logout'),

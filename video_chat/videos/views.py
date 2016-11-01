@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from .models import Video
 from .forms import UploadForm
+from chat.models import ChatRoom
 
 
 # Create your views here.
@@ -33,8 +34,10 @@ class Upload(LoginRequiredMixin, generic.CreateView):
     model = Video
     form_class = UploadForm
     template_name = 'videos/upload.html'
-    
+
     def get_success_url(self):
+	chatroom = ChatRoom(video=self.object)
+	chatroom.save()
         return reverse('profile', args = [self.request.user.id])
 
     def form_valid(self, form):

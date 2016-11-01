@@ -2,12 +2,14 @@
 {% load static %}
 
 {% block content %}
-        <link rel="stylesheet" type="text/css" href="{% static "videos/style.css" %}" />
         <div class="video_section">
           <h3 class="video_title">{{video.title}}</h3>
           <video width="600" height="480" controls>
             <source src="{{video.file.url}}" type="video/mp4"/>
           </video>
           <p>{{video.description}}</p>
+        </div>
+        <div class="chat_section">
+            {% include 'chat/chat.html' %}
         </div>
 {% endblock content %}
