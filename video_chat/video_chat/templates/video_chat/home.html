@@ -1,9 +1,19 @@
 {% extends 'video_chat/base.html' %}
 
 {% block content %}
+<ul>
 {% for up in friends_list %}
-    <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
-    <span>a visto </span>
-    <a href="{% url 'videos:play' up.last_video.pk %}"> {{ up.last_video.title }}</a>
+
+
+    <li>
+        <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
+        {% if up.last_video %}
+        <span>a visto </span>
+        <a href="{% url 'videos:play' up.last_video.pk %}"> {{ up.last_video.title }}</a>
+        {% else %}
+        <span>no ha visto nada aun</span>
+        {% endif %}
+    </li>
 {% endfor %}
+</ul>
 {% endblock content %}
