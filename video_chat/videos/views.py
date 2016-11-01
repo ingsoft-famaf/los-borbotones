@@ -35,6 +35,8 @@ class Upload(LoginRequiredMixin, generic.CreateView):
     template_name = 'videos/upload.html'
     
     def get_success_url(self):
+	chatroom = ChatRoom(video=self.object)
+	chatroom.save()
         return reverse('profile', args = [self.request.user.id])
 
     def form_valid(self, form):
