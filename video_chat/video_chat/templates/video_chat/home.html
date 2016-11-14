@@ -8,7 +8,7 @@
     <li>
         <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
         {% if up.last_video %}
-        <span>a visto </span>
+        <span>ha visto </span>
         <a href="{% url 'videos:play' up.last_video.pk %}"> {{ up.last_video.title }}</a>
         {% else %}
         <span>no ha visto nada aun</span>
