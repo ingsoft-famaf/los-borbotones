@@ -3,6 +3,7 @@ from django.views import generic
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.utils.html import escape
 
 from models import ChatRoom, Message
 from users.models import UserProfile
@@ -27,7 +28,7 @@ def create_message(request):
     else:
         return redirect("/")
 @login_required()
-def message_set(request, pk ):
+def message_list(request, pk ):
     if request.method == "GET":
         if request.is_ajax():
             current_video = Video.objects.get(pk=pk)
@@ -40,5 +41,5 @@ def message_set(request, pk ):
             data = data[bot:top]
             data_txt = ""
             for sms in data:
-                data_txt += "<p>" + sms.author.user.username + ": " + sms.content_text + "</p>"
+                data_txt += "<p>" + escape(sms.author.user.username) + ": " + escape(sms.content_text) + "</p>"
             return HttpResponse(data_txt)
