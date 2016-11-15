@@ -48,6 +48,12 @@
                 </form>
                 <form id="register-form" action="{% url 'register' %}" method="post" enctype="multipart/form-data" role="form" style="display: none;">
                   {% csrf_token %}
+
+                  {% if user_form.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    {{ user_form.errors }}
+                  </div>
+                  {% endif %}
                   <div class="form-group">
                     {{ user_form.username }}
                   </div>
