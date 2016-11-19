@@ -14,7 +14,6 @@ class ViewsTestCase(TestCase):
     fake_username = 'pedro'
     fake_mail = 'pedro@mail.com'
     fake_pass = 'password'
-    content_text = '<p>Hola</p>'
 
     def setUp(self):
         user = User.objects.create_user(self.fake_username, self.fake_mail,self.fake_pass)
@@ -26,9 +25,28 @@ class ViewsTestCase(TestCase):
         self.chat_room.save()
 
     def test_message_get_escaped(self):
+        content_text = '<p>Hola</p>'
         c = Client()
         c.login(username = self.fake_username, password = self.fake_pass)
-        c.post('/chat/chat/', {'content_text':self.content_text, 'chat_id':self.chat_room.id}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        c.post('/chat/chat/', {'content_text':content_text, 'chat_id':self.chat_room.id}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         response = c.get('/chat/messages/'+str(self.video.id), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        correct_response = "<p>"+escape(self.user.user.username)+": "+escape(self.content_text)+"</p>"
+        correct_response = "<p>"+escape(self.user.user.username)+": "+escape(content_text)+"</p>"
         self.assertEqual(response.content, correct_response)
+
+    def test_long_message(self):
+        content_text = 'A'*10000
+        c = Client()
+        c.login(username = self.fake_username, password = self.fake_pass)
+        response = c.post('/chat/chat/', {'content_text':content_text, 'chat_id':self.chat_room.id}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+
+    def test_anon_user_create_message(self):
+        content_text = 'Hola'
+        c = Client()
+        response = c.post('/chat/chat/', {'content_text':content_text, 'chat_id':self.chat_room.id}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 302)
+
+    def test_anon_user_reads_messages(self):
+        c = Client()
+        response = c.get('/chat/messages/'+str(self.video.id), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 302)
