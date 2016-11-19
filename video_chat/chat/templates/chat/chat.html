@@ -1,11 +1,17 @@
+    <div class="row">
+        <div id="chat_window" class="divScroll col-lg-12">
 
-<div id="chat_window" class="divScroll">
+        </div>
+    </div>
+    <div class="row">
+        <div >
+            <form method="post" id="send-message">{% csrf_token %}
+                <input class="col-lg-9" id="id_content_text"  type="input-text" placeholder="Nuevo mensaje...">
+                <input type='submit' class="col-lg-3" value='Enviar' />
+            </form>
+        </div>
+    </div>
 
-</div>
-    <form method="post" id="send-message">{% csrf_token %}
-        <input id="id_content_text" type="input-text">
-        <input type='submit' value='Enviar'/>
-    </form>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
@@ -62,4 +68,8 @@
         return cookieValue;
     }
     var csrftoken = getCookie('csrftoken');
+</script>
+
+<script type="text/javascript">
+    $("#chat_window").scrollTop($("#chat_window")[0].scrollHeight);
 </script>

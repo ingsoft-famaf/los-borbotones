@@ -8,5 +8,8 @@ body { padding-top: 70px; }
 .divScroll {
             overflow:scroll;
             height:400px;
-            width:600px;
+}
+.chat_section {
+    margin-top: 100px;
+    height: 480;
 }
