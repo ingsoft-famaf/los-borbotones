@@ -48,3 +48,43 @@ class view_tests(TestCase):
 		response = clientomar.get("/video/"+str(video.id)+"/delete/")
 
 		self.assertEqual(response.status_code, 302)
+
+	def test_upload_invalid(self):
+
+		useroscar = User.objects.create_user(username="oscar", email="oscar@hotmail.com", password="123")
+		
+		useroscar.save()
+
+		clienteoscar = Client()
+		clienteoscar.login(username="oscar", password="123")
+
+		fp = open("test.txt", "a+")
+
+		response = clienteoscar.post('/video/upload/', {'autor': 'oscar', 'title': 'videotest','description' : 'testeando', 'file' :fp})
+		videos = Video.objects.all()
+
+		for video in videos:
+			if video.title == "videotest":
+				assert(False)
+				pass
+		assert(True)
+
+	def test_upload_valid(self):
+		userflor = User.objects.create_user(username="flor", email="flor@hotmail.com", password="123")
+		
+		userflor.save()
+
+		clientflor = Client()
+		clientflor.login(username="flor", password="123")
+
+		fp = open('media_test/bestanimal.mp4')
+
+
+		response = clientflor.post('/video/upload/', {'autor': 'flor', 'title': 'videotestcabra','description' : 'testeando', 'file' :fp})
+		videos = Video.objects.all()
+
+		for video in videos:
+			if video.title == "videotestcabra":
+				isvalid = video.title == "videotestcabra"
+				pass
+		self.assertEqual(True, isvalid)
