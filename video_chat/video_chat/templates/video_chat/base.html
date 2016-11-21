@@ -11,8 +11,10 @@
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
   <link rel="stylesheet" href="{% static 'video_chat/css/main.css' %}">
   {% block extra_stylesheet %} {% endblock %}
+</head>
 
-   <nav class="navbar navbar-inverse navbar-fixed-top">
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -36,7 +38,7 @@
             </a>
           </li>
         </ul>
-        <div style="margin: 0px auto; text-align:center; max-width: 400px;">
+        <div style="margin: 0px auto; text-align: center; max-width: 400px;">
           <form class="navbar-form navbar-left" id="search_form" action="{% url 'videos:search' %}" method="get">
             <div class="input-group">
               <div class="input-group-btn">
@@ -68,9 +70,6 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-</head>
-
-<body>
 {% block body %}
   <div class="container">
     {% block content %}

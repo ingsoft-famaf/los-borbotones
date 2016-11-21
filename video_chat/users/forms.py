@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from users.models import UserProfile
 from django.contrib.auth.models import User
 from django import forms
@@ -7,6 +8,33 @@ from django.db.models import Q
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     email = forms.CharField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs = {
+            'class': 'form-control',
+            'type': 'text',
+            'name': 'username',
+            'id': 'username',
+            'tabindex': '1',
+            'placeholder': 'Usuario'
+        }
+        self.fields['email'].widget.attrs = {
+            'class': 'form-control',
+            'type': 'text',
+            'name': 'email',
+            'id': 'email',
+            'tabindex': '1',
+            'placeholder': 'Correo electrónico'
+        }
+        self.fields['password'].widget.attrs = {
+            'class': 'form-control',
+            'type': 'password',
+            'name': 'password',
+            'id': 'password',
+            'tabindex': '2',
+            'placeholder': 'Contraseña'
+        }
 
     class Meta:
         model = User

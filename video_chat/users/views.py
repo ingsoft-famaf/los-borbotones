@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
@@ -33,13 +34,12 @@ def Register(request):
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
 
             profile.save()
             registered = True
-
+            login(request, user)
             return redirect('home')
 
         else:
@@ -71,10 +71,9 @@ def UserLogin(request):
             else:
                 return HttpResponse("Your account is disabled.")
         else:
-            return render(request, 'users/login.html', {'error_message': "The user or password is incorrect"})
+            return render(request, 'users/register.html', {'error_message': "El usuario o contraseña son incorrectos", 'user_form': UserForm(), 'profile_form': UserProfileForm()})
     else:
-
-        return render(request, 'users/login.html')
+        return render(request, 'users/register.html', {'user_form': UserForm(), 'profile_form': UserProfileForm()})
 
 
 @login_required
