@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
@@ -70,9 +71,7 @@ def UserLogin(request):
             else:
                 return HttpResponse("Your account is disabled.")
         else:
-            user_form = UserForm()
-            profile_form = UserProfileForm()
-            return render(request, 'users/register.html', {'error_message': "The user or password is incorrect", 'user_form': UserForm(), 'profile_form': UserProfileForm()})
+            return render(request, 'users/register.html', {'error_message': "El usuario o contraseña son incorrectos", 'user_form': UserForm(), 'profile_form': UserProfileForm()})
     else:
         return render(request, 'users/register.html', {'user_form': UserForm(), 'profile_form': UserProfileForm()})
 
