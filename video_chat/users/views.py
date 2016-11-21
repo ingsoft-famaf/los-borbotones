@@ -124,7 +124,8 @@ def SendRequest(request):
     if request.method == 'POST':
         friend_pk = request.POST['friend_pk']
         friend = User.objects.get(pk=friend_pk)
-        if not FriendRequest.objects.filter(sender=friend, receiver=user).exists():
+        if ((not FriendRequest.objects.filter(sender=friend, receiver=user).exists()) 
+            and (not user.userprofile.friend.filter(pk=friend_pk).exists())):
             FriendRequest.objects.get_or_create(sender=user, receiver=friend)
     return redirect('home')
 
