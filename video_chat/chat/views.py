@@ -15,8 +15,8 @@ def create_message(request):
         if request.is_ajax():
             new_message_form = MessageForm(request.POST)
             if new_message_form.is_valid():
-                new_message = new_message_form.save()
-                new_message.author = UserProfile.objects.get(pk=request.user.pk)
+                new_message = new_message_form.save(commit=False)
+                new_message.author = UserProfile.objects.get(pk=request.user.userprofile.pk)
                 new_message.chat_room = ChatRoom.objects.get(pk=request.POST['chat_id'])
                 new_message.save()
                 return JsonResponse(request.POST)
@@ -26,12 +26,13 @@ def create_message(request):
             return redirect("/")
     else:
         return redirect("/")
+        
 @login_required()
 def message_set(request, pk ):
     if request.method == "GET":
         if request.is_ajax():
-            current_video = Video.objects.get(pk=pk)
-            data = Message.objects.filter(chat_room = current_video.chatroom).order_by('send_date')
+            chatroom = ChatRoom.objects.get(pk = pk)
+            data = Message.objects.filter(chat_room = chatroom).order_by('send_date')
             top = data.count()
             if top-50 < 0:
                 bot = 0

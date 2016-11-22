@@ -21,13 +21,18 @@ class SearchVideo(LoginRequiredMixin, generic.ListView):
 
 
 class Play(LoginRequiredMixin, generic.DetailView):
-    template_name = 'videos/play.html'
+    template_name = 'chat/chat.html'
     model = Video
+    context_object_name = 'chatroom'
 
     def get_object(self):
         video = super(generic.DetailView, self).get_object()
-        video.userprofile_set.add(self.request.user.userprofile)
-        return video
+        chat = self.kwargs.get('chat')
+        if (chat == None):
+            chatroom = self.request.user.userprofile.chatroom_set.create(video=video)
+        else:
+            chatroom = ChatRoom.objects.get(pk=chat)
+        return chatroom
 
 
 class Upload(LoginRequiredMixin, generic.CreateView):
@@ -41,7 +46,7 @@ class Upload(LoginRequiredMixin, generic.CreateView):
         return reverse('profile', args = [self.request.user.id])
 
     def form_valid(self, form):
-        form.instance.autor = self.request.user
+        form.instance.author = self.request.user
         return super(Upload, self).form_valid(form)
 
 
@@ -51,7 +56,7 @@ class Delete(LoginRequiredMixin, generic.DeleteView):
 
     def get_object(self, **kwargs):
         video = super(generic.DeleteView, self).get_object()
-        if not video.autor == self.request.user:
+        if not video.author == self.request.user:
             raise Http404
         return video
 

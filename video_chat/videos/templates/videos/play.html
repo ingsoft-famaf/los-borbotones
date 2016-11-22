@@ -1,15 +1,9 @@
-{% extends 'video_chat/base.html' %}
-{% load static %}
+<div class="video_section">
+  <h3 class="video_title">{{ chatroom.video.title }}</h3>
+  <video width="600" height="480" controls>
+    <source src="{{ chatroom.video.file.url }}" type="video/mp4"/>
+  </video>
+  <p>{{ chatroom.video.description }}</p>
+</div>
 
-{% block content %}
-        <div class="video_section">
-          <h3 class="video_title">{{video.title}}</h3>
-          <video width="600" height="480" controls>
-            <source src="{{video.file.url}}" type="video/mp4"/>
-          </video>
-          <p>{{video.description}}</p>
-        </div>
-        <div class="chat_section">
-            {% include 'chat/chat.html' %}
-        </div>
-{% endblock content %}
+

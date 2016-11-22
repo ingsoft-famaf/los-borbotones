@@ -15,7 +15,7 @@ def create_request(sender, receiver):
     FriendRequest.objects.create(sender=sender, receiver=receiver)
 
 def create_friendship(user1, user2):
-    user1.userprofile.friend.add(user2.userprofile)
+    user1.userprofile.friends.add(user2.userprofile)
 
 class FriendRequestViewTest(TestCase):
     def test_send_new_request(self):
