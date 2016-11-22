@@ -19,17 +19,16 @@ class ViewsTestCase(TestCase):
         user = User.objects.create_user(self.fake_username, self.fake_mail,self.fake_pass)
         self.user = UserProfile(user = user)
         self.user.save()
-        self.video = Video(title = "TITULO", description = "DESCRIPCION", autor = user)
+        self.video = Video(title = "TITULO", description = "DESCRIPCION", author = user)
         self.video.save()
-        self.chat_room = ChatRoom(video = self.video)
-        self.chat_room.save()
+        self.chat_room = self.user.chatroom_set.create(video=self.video)
 
     def test_message_get_escaped(self):
         content_text = '<p>Hola</p>'
         c = Client()
         c.login(username = self.fake_username, password = self.fake_pass)
         c.post('/chat/chat/', {'content_text':content_text, 'chat_id':self.chat_room.id}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        response = c.get('/chat/messages/'+str(self.video.id), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = c.get('/chat/messages/'+str(self.chat_room.pk), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         correct_response = "<p>"+escape(self.user.user.username)+": "+escape(content_text)+"</p>"
         self.assertEqual(response.content, correct_response)
 
