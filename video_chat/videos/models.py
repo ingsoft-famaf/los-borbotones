@@ -10,7 +10,7 @@ class Video(models.Model):
     description = models.TextField(max_length = 300)
     pub_date = models.DateTimeField('date_published', auto_now_add=True)
     file = models.FileField(upload_to='videos/%Y/%m/%d/',validators = [validate_file_extension])
-    autor = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=None)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.title

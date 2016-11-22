@@ -24,7 +24,7 @@ class view_tests(TestCase):
 		userpep.save()
 		userjuan.save()
 
-		video = Video(title="pepito bailando full HD 1 link MEGA", description="Video gracioso de pepito bailando, manito arriba si te gusto", autor=userjuan)
+		video = Video(title="pepito bailando full HD 1 link MEGA", description="Video gracioso de pepito bailando, manito arriba si te gusto", author=userjuan)
 		video.save()
 
 		clientpepito = Client()
@@ -40,7 +40,7 @@ class view_tests(TestCase):
 		useromar.save()
 		userfer.save()
 
-		video = Video(title="omar escabiado", description="omar muy escabiado", autor=useromar)
+		video = Video(title="omar escabiado", description="omar muy escabiado", author=useromar)
 		video.save()
 
 		clientomar = Client()
@@ -60,7 +60,7 @@ class view_tests(TestCase):
 
 		fp = open("test.txt", "a+")
 
-		response = clienteoscar.post('/video/upload/', {'autor': 'oscar', 'title': 'videotest','description' : 'testeando', 'file' :fp})
+		response = clienteoscar.post('/video/upload/', {'author': 'oscar', 'title': 'videotest','description' : 'testeando', 'file' :fp})
 		videos = Video.objects.all()
 
 		for video in videos:
@@ -80,7 +80,7 @@ class view_tests(TestCase):
 		fp = open('media_test/bestanimal.mp4')
 
 
-		response = clientflor.post('/video/upload/', {'autor': 'flor', 'title': 'videotestcabra','description' : 'testeando', 'file' :fp})
+		response = clientflor.post('/video/upload/', {'author': 'flor', 'title': 'videotestcabra','description' : 'testeando', 'file' :fp})
 		videos = Video.objects.all()
 
 		for video in videos:

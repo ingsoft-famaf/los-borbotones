@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Video
 from .forms import UploadForm
@@ -24,10 +25,24 @@ class Play(LoginRequiredMixin, generic.DetailView):
     template_name = 'videos/play.html'
     model = Video
 
-    def get_object(self):
-        video = super(generic.DetailView, self).get_object()
-        video.userprofile_set.add(self.request.user.userprofile)
-        return video
+    def get_context_data(self, **kwargs):
+        data = super(Play, self).get_context_data(**kwargs)
+        userprofile = self.request.user.userprofile
+        chat = self.kwargs.get('chat')
+        if (chat == None):
+            chatroom = userprofile.chatroom_set.create(video=self.object)
+        else:
+            try:
+                chatroom = ChatRoom.objects.get(pk=chat, video=self.object)
+                if (userprofile not in chatroom.users.all()):
+                    if ((chatroom.users.all() & userprofile.friends.all()).exists()):
+                        chatroom.users.add(userprofile)
+                    else: raise ObjectDoesNotExist
+            except ObjectDoesNotExist:
+                chatroom = userprofile.chatroom_set.create(video=self.object)
+
+        data['chatroom'] = chatroom
+        return data
 
 
 class Upload(LoginRequiredMixin, generic.CreateView):
@@ -41,7 +56,7 @@ class Upload(LoginRequiredMixin, generic.CreateView):
         return reverse('profile', args = [self.request.user.id])
 
     def form_valid(self, form):
-        form.instance.autor = self.request.user
+        form.instance.author = self.request.user
         return super(Upload, self).form_valid(form)
 
 
@@ -51,7 +66,7 @@ class Delete(LoginRequiredMixin, generic.DeleteView):
 
     def get_object(self, **kwargs):
         video = super(generic.DeleteView, self).get_object()
-        if not video.autor == self.request.user:
+        if not video.author == self.request.user:
             raise Http404
         return video
 
