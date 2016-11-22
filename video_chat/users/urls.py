@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^decline/$', views.DeleteRequest, name='decline_request'),
     url(r'^delete/$', views.RemoveFriend, name='delete_friend'),
     url(r'^friends/$', views.ViewFriends.as_view(), name='friends'),
+    url(r'^last_video/$', views.last_video, name='last_video'),
 ] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

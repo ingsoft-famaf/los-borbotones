@@ -106,7 +106,7 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
             data['is_friend'] = True
         else:
             data['is_friend'] = False
-            
+
         return data
 
 
@@ -124,7 +124,7 @@ def SendRequest(request):
     if request.method == 'POST':
         friend_pk = request.POST['friend_pk']
         friend = User.objects.get(pk=friend_pk)
-        if ((not FriendRequest.objects.filter(sender=friend, receiver=user).exists()) 
+        if ((not FriendRequest.objects.filter(sender=friend, receiver=user).exists())
             and (not user.userprofile.friend.filter(pk=friend_pk).exists())):
             FriendRequest.objects.get_or_create(sender=user, receiver=friend)
     return redirect('home')
@@ -175,3 +175,14 @@ class ViewFriends(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return(self.request.user.userprofile.friend.all())
+@login_required
+def last_video(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            video = request.user.userprofile.last_video;
+            video.userprofile_set.remove(request.user.userprofile)
+            return HttpResponse(request)
+        else:
+            return redirect("/")
+    else:
+        return redirect("/")
