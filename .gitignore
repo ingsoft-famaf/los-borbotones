@@ -97,3 +97,4 @@ videovenv/
 *.mp4
 *~
 migrations/
+media/
