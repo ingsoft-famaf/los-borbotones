@@ -3,17 +3,13 @@
 {% block content %}
 <ul>
 {% for up in friends_list %}
-
-
+  {% for chat in up.chatroom_set.all %}
     <li>
-        <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
-        {% if up.last_video %}
-        <span>ha visto </span>
-        <a href="{% url 'videos:play' up.last_video.pk %}"> {{ up.last_video.title }}</a>
-        {% else %}
-        <span>no ha visto nada aun</span>
-        {% endif %}
+      <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
+      <span>ha visto </span>
+      <a href="{% url 'videos:play' chat.video.pk chat.pk %}"> {{ chat.video.title }}</a>
     </li>
+  {% endfor %}
 {% endfor %}
 </ul>
 {% endblock content %}
