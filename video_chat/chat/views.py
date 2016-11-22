@@ -3,6 +3,7 @@ from django.views import generic
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.utils.html import escape
 
 from models import ChatRoom, Message
 from users.models import UserProfile
@@ -15,9 +16,11 @@ def create_message(request):
         if request.is_ajax():
             new_message_form = MessageForm(request.POST)
             if new_message_form.is_valid():
-                new_message = new_message_form.save()
-                new_message.author = UserProfile.objects.get(pk=request.user.pk)
+                new_message = new_message_form.save(commit=False)
+                new_message.author = UserProfile.objects.get(pk=request.user.userprofile.pk)
                 new_message.chat_room = ChatRoom.objects.get(pk=request.POST['chat_id'])
+                if request.user.userprofile not in new_message.chat_room.users.all():
+                    return redirect("/")
                 new_message.save()
                 return JsonResponse(request.POST)
             else:
@@ -26,12 +29,13 @@ def create_message(request):
             return redirect("/")
     else:
         return redirect("/")
+        
 @login_required()
-def message_set(request, pk ):
+def message_list(request, pk ):
     if request.method == "GET":
         if request.is_ajax():
-            current_video = Video.objects.get(pk=pk)
-            data = Message.objects.filter(chat_room = current_video.chatroom).order_by('send_date')
+            chatroom = ChatRoom.objects.get(pk = pk)
+            data = Message.objects.filter(chat_room = chatroom).order_by('send_date')
             top = data.count()
             if top-50 < 0:
                 bot = 0
@@ -40,5 +44,5 @@ def message_set(request, pk ):
             data = data[bot:top]
             data_txt = ""
             for sms in data:
-                data_txt += "<p>" + sms.author.user.username + ": " + sms.content_text + "</p>"
+                data_txt += "<p>" + escape(sms.author.user.username) + ": " + escape(sms.content_text) + "</p>"
             return HttpResponse(data_txt)

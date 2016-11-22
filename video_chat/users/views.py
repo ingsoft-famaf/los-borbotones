@@ -102,7 +102,7 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
         else:
             data['can_send'] = False
 
-        if current_profile in user.userprofile.friend.all():
+        if current_profile in user.userprofile.friends.all():
             data['is_friend'] = True
         else:
             data['is_friend'] = False
@@ -125,7 +125,7 @@ def SendRequest(request):
         friend_pk = request.POST['friend_pk']
         friend = User.objects.get(pk=friend_pk)
         if ((not FriendRequest.objects.filter(sender=friend, receiver=user).exists())
-            and (not user.userprofile.friend.filter(pk=friend_pk).exists())):
+            and (not user.userprofile.friends.filter(pk=friend_pk).exists())):
             FriendRequest.objects.get_or_create(sender=user, receiver=friend)
     return redirect('home')
 
@@ -139,8 +139,8 @@ def AcceptRequest(request):
         qs = FriendRequest.objects.filter(sender=friend.user, receiver=userprofile.user)
         if qs.exists():
             qs.delete()
-            if not userprofile.friend.filter(pk=friend_pk).exists():
-                userprofile.friend.add(friend)
+            if not userprofile.friends.filter(pk=friend_pk).exists():
+                userprofile.friends.add(friend)
     return redirect('users:requests')
 
 @login_required
@@ -157,7 +157,7 @@ def RemoveFriend(request):
     if request.method == 'POST':
         friend_pk = request.POST['friend_pk']
         friend = UserProfile.objects.get(pk=friend_pk)
-        userprofile.friend.remove(friend)
+        userprofile.friends.remove(friend)
     return redirect('home')
 
 class ViewRequests(LoginRequiredMixin, generic.ListView):
@@ -174,13 +174,13 @@ class ViewFriends(LoginRequiredMixin, generic.ListView):
     context_object_name = 'friends_list'
 
     def get_queryset(self):
-        return(self.request.user.userprofile.friend.all())
+        return(self.request.user.userprofile.friends.all())
+
 @login_required
 def last_video(request):
     if request.method == 'POST':
         if request.is_ajax():
-            video = request.user.userprofile.last_video;
-            video.userprofile_set.remove(request.user.userprofile)
+            #TODO Procesar request ()
             return HttpResponse(request)
         else:
             return redirect("/")

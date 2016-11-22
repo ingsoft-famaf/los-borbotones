@@ -21,7 +21,7 @@
                     url : "/chat/chat/",
                     data : {
                             csrfmiddlewaretoken : csrftoken,
-                            chat_id : {{video.chatroom.id}},
+                            chat_id : {{ chatroom.id }},
                             content_text : message,
                         },
 
@@ -34,7 +34,7 @@
     $(document).ready(
         function() {
             setInterval(function() {
-                $.get( "/chat/messages/{{video.pk}}", function( data ) {
+                $.get( "/chat/messages/{{ chatroom.pk }}", function( data ) {
                     $("#chat_window").html(
                         data
                     );
