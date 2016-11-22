@@ -18,6 +18,8 @@ def create_message(request):
                 new_message = new_message_form.save(commit=False)
                 new_message.author = UserProfile.objects.get(pk=request.user.userprofile.pk)
                 new_message.chat_room = ChatRoom.objects.get(pk=request.POST['chat_id'])
+                if request.user.userprofile not in new_message.chat_room.users.all():
+                    return redirect("/")
                 new_message.save()
                 return JsonResponse(request.POST)
             else:
