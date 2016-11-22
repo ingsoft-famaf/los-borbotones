@@ -24,7 +24,7 @@ class view_tests(TestCase):
 		userpep.save()
 		userjuan.save()
 
-		video = Video(title="pepito bailando full HD 1 link MEGA", description="Video gracioso de pepito bailando, manito arriba si te gusto", autor=userjuan)
+		video = Video(title="pepito bailando full HD 1 link MEGA", description="Video gracioso de pepito bailando, manito arriba si te gusto", author=userjuan)
 		video.save()
 
 		clientpepito = Client()
@@ -40,7 +40,7 @@ class view_tests(TestCase):
 		useromar.save()
 		userfer.save()
 
-		video = Video(title="omar escabiado", description="omar muy escabiado", autor=useromar)
+		video = Video(title="omar escabiado", description="omar muy escabiado", author=useromar)
 		video.save()
 
 		clientomar = Client()
@@ -48,3 +48,43 @@ class view_tests(TestCase):
 		response = clientomar.get("/video/"+str(video.id)+"/delete/")
 
 		self.assertEqual(response.status_code, 302)
+
+	def test_upload_invalid(self):
+
+		useroscar = User.objects.create_user(username="oscar", email="oscar@hotmail.com", password="123")
+		
+		useroscar.save()
+
+		clienteoscar = Client()
+		clienteoscar.login(username="oscar", password="123")
+
+		fp = open("test.txt", "a+")
+
+		response = clienteoscar.post('/video/upload/', {'author': 'oscar', 'title': 'videotest','description' : 'testeando', 'file' :fp})
+		videos = Video.objects.all()
+
+		for video in videos:
+			if video.title == "videotest":
+				assert(False)
+				pass
+		assert(True)
+
+	def test_upload_valid(self):
+		userflor = User.objects.create_user(username="flor", email="flor@hotmail.com", password="123")
+		
+		userflor.save()
+
+		clientflor = Client()
+		clientflor.login(username="flor", password="123")
+
+		fp = open('media_test/bestanimal.mp4')
+
+
+		response = clientflor.post('/video/upload/', {'author': 'flor', 'title': 'videotestcabra','description' : 'testeando', 'file' :fp})
+		videos = Video.objects.all()
+
+		for video in videos:
+			if video.title == "videotestcabra":
+				isvalid = video.title == "videotestcabra"
+				pass
+		self.assertEqual(True, isvalid)
