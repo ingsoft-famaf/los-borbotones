@@ -1,20 +1,12 @@
-{% extends 'video_chat/base.html' %}
-{% load static %}
 
-{% block content %}
-{% include 'videos/play.html' %}
-<div class="chat_section">
-  <div id="chat_window" class="divScroll">
+<div id="chat_window" class="divScroll">
 
-  </div>
-  <form method="post" id="send-message">{% csrf_token %}
-    <input id="id_content_text" type="input-text">
-    <input type='submit' value='Enviar'/>
-  </form>
 </div>
-{% endblock content %}
+    <form method="post" id="send-message">{% csrf_token %}
+        <input id="id_content_text" type="input-text">
+        <input type='submit' value='Enviar'/>
+    </form>
 
-{% block extra_script %}
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
 
@@ -29,7 +21,7 @@
                     url : "/chat/chat/",
                     data : {
                             csrfmiddlewaretoken : csrftoken,
-                            chat_id : {{ chatroom.pk }},
+                            chat_id : {{ chatroom.id }},
                             content_text : message,
                         },
 
@@ -71,4 +63,3 @@
     }
     var csrftoken = getCookie('csrftoken');
 </script>
-{% endblock extra_script %}

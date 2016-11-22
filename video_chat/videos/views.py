@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Video
 from .forms import UploadForm
@@ -21,18 +22,27 @@ class SearchVideo(LoginRequiredMixin, generic.ListView):
 
 
 class Play(LoginRequiredMixin, generic.DetailView):
-    template_name = 'chat/chat.html'
+    template_name = 'videos/play.html'
     model = Video
-    context_object_name = 'chatroom'
 
-    def get_object(self):
-        video = super(generic.DetailView, self).get_object()
+    def get_context_data(self, **kwargs):
+        data = super(Play, self).get_context_data(**kwargs)
+        userprofile = self.request.user.userprofile
         chat = self.kwargs.get('chat')
         if (chat == None):
-            chatroom = self.request.user.userprofile.chatroom_set.create(video=video)
+            chatroom = userprofile.chatroom_set.create(video=self.object)
         else:
-            chatroom = ChatRoom.objects.get(pk=chat)
-        return chatroom
+            try:
+                chatroom = ChatRoom.objects.get(pk=chat, video=self.object)
+                if (userprofile not in chatroom.users.all()):
+                    if ((chatroom.users.all() & userprofile.friends.all()).exists()):
+                        chatroom.users.add(userprofile)
+                    else: raise ObjectDoesNotExist
+            except ObjectDoesNotExist:
+                chatroom = userprofile.chatroom_set.create(video=self.object)
+
+        data['chatroom'] = chatroom
+        return data
 
 
 class Upload(LoginRequiredMixin, generic.CreateView):
