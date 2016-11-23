@@ -2,46 +2,50 @@
 {% load static %}
 
 {% block extra_stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{% static 'users/style.css' %}" />
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile.css' %}" />
 {% endblock %}
 
 {% block content %}
-<div class="profile_info">
-  {% if userprofile.picture %}
-    <img src="{{userprofile.picture.url}}" alt="profile picture"/>
-  {% else %}
-    <img src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
-  {% endif %}
-  <p>{{ userprofile.user.username }}</p>
+<div class="profile_style">
+  <div class="profile_info">
+    {% if userprofile.picture %}
+      <img class="profile_picture" src="{{userprofile.picture.url}}" alt="profile picture"/>
+    {% else %}
+      <img class="profile_picture" src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
+    {% endif %}
+    <p id="username" >{{ userprofile.user.username }}</p>
 
-  {% if is_friend %}
-    <form method="POST" action="{% url 'users:delete_friend' %}">
-      {% csrf_token %}
-      <button type="submit" name="friend_pk" value="{{ userprofile.pk }}" class="btn btn-danger">
-        Eliminar amigo
-      </button>
-    </form>
-  {% else %}
-    {% if can_send %}
-      <form action="{% url 'users:send_request' %}" method="POST">
+    {% if is_friend %}
+      <form method="POST" action="{% url 'users:delete_friend' %}">
         {% csrf_token %}
-        <button type="submit" name="friend_pk" value="{{ profile_pk }}" class="btn btn-primary">
-          Enviar solicitud
+        <button id="button_friendship" type="submit" name="friend_pk" value="{{ userprofile.pk }}" class="btn btn-danger">
+          Eliminar amigo
         </button>
       </form>
+    {% else %}
+      {% if can_send %}
+        <form action="{% url 'users:send_request' %}" method="POST">
+          {% csrf_token %}
+          <button id="button_friendship" type="submit" name="friend_pk" value="{{ profile_pk }}" class="btn btn-primary">
+            Enviar solicitud
+          </button>
+        </form>
+      {% endif %}
     {% endif %}
-  {% endif %}
-</div>
-<div class="videos_list">
-  <ul>
-    {% for video in video_list %}
-    <li>
-      <a href="{% url 'videos:play' video.id %}">{{video.title}}</a>
-      {% ifequal user.pk profile_pk %}
-      <a href="{% url 'videos:delete' video.id %}">borrar</a>
-      {% endifequal %}
-    </li>
-    {% endfor%}
-  </ul>
+  </div>
+  <p id="videos"> Videos Subidos </p>
+  <div class="videos_list">
+    <ul>
+      {% for video in video_list %}
+      <li>
+        <a id="video_title" href="{% url 'videos:play' video.id %}" class="btn btn-info btn-xs">{{video.title}}</a>
+        {% ifequal user.pk profile_pk %}
+        <a id="video_title" href="{% url 'videos:delete' video.id %}" class="btn btn-default btn-xs">Borrar Video</a>
+        {% endifequal %}
+      </li>
+      {% endfor%}
+    </ul>
+  </div>
 </div>
 {% endblock content %}
