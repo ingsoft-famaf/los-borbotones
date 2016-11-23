@@ -77,7 +77,7 @@ class view_tests(TestCase):
 		clientflor = Client()
 		clientflor.login(username="flor", password="123")
 
-		fp = open('media_test/bestanimal.mp4')
+		fp = open('test_media/bestanimal.mp4')
 
 
 		response = clientflor.post('/video/upload/', {'author': 'flor', 'title': 'videotestcabra','description' : 'testeando', 'file' :fp})
