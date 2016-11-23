@@ -2,18 +2,49 @@
 
 
 {% block content %}
-    {% if founded_videos %}
-        <ul>
-        {% for video in founded_videos %}
-            <li><a href="{% url 'videos:play' video.id  %}">{{ video.title }}</a>
-            <p>{{video.description}}</p>
-            </li>
-        {% endfor %}
-        </ul>
-    {% elif error_message %}
-        <p>{{ error_message }}</p>
+{% if founded_videos %}
+<div class="row row-eq-height">
+  <div class="col-md-10 col-md-offset-1">
+  {% for video in founded_videos %}
+  <ul class='list-group'>
+    <li class='list-group-item' style="background-color: #f2f2f2;">
+      <a href="{% url 'videos:play' video.id  %}"><h3 class="list-group-item-heading text-danger">{{ video.title }}</h3></a>
+      <span class="list-group-item-text" style="word-wrap: break-word;">{{ video.description }}</span>
+    </li>
+    <li class="list-group-item" style="background-color: #f2f2f2;">
+      <p class="list-group-item-text text-muted text-right"> Subido por {{ video.author.username }}</p>
+    </li>
+  </ul>
+  {% endfor %}
+  </div>
+</div><!-- /.row -->
+
+{% else %}
+    <p>No se encontraron videos.</p>
+{% endif %}
+
+{% if is_paginated %}
+<div class="text-center">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?search_key={{ request.GET.search_key }}&page={{ page_obj.previous_page_number }}">&laquo;</a></li>
     {% else %}
-        <p>No se encontraron videos.</p>
+      <li class="disabled"><span>&laquo;</span></li>
     {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?search_key={{ request.GET.search_key }}&page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?search_key={{ request.GET.search_key }}&page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
 
 {% endblock content %}
