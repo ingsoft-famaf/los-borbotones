@@ -3,13 +3,15 @@
 
 {% block content %}
 <div class="row">
-  <div class="video_section col-md-8">
+  <div class="video_section col-lg-8 col-sm-8 col-xs-12 col-md-8">
     <h3 class="video_title">{{video.title}}</h3>
-    <video  class="col-md-12  well well-sm video" height="480" controls>
+    <div class="embed-responsive embed-responsive-16by9">
+    <video  class="col-md-12  well well-sm video embebed-responsive-item" height="480" controls>
       <source src="{{ video.file.url }}" type="video/mp4"/>
     </video>
+    </div>
   </div>
-  <div class="chat_section col-md-4">
+  <div class="chat_section col-lg-4 col-sm-4 col-xs-12 col-md-4">
     {% include 'chat/chat.html' %}
   </div>
 </div>
