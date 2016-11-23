@@ -9,6 +9,8 @@ from models import ChatRoom, Message
 from users.models import UserProfile
 from videos.models import Video
 from forms import MessageForm
+from django.core.urlresolvers import reverse
+
 # Create your views here.
 @login_required()
 def create_message(request):
@@ -44,5 +46,5 @@ def message_list(request, pk ):
             data = data[bot:top]
             data_txt = ""
             for sms in data:
-                data_txt += "<p>" + escape(sms.author.user.username) + ": " + escape(sms.content_text) + "</p>"
+                data_txt += "<p style='word-wrap: break-word;'><a class=\"text-info\"href="+ reverse('profile', args=[sms.author.user.pk,]) + " \">" + escape(sms.author.user.username) + " </a>" + ": " + escape(sms.content_text) + "</p>"
             return HttpResponse(data_txt)
