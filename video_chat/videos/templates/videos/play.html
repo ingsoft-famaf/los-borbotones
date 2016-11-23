@@ -8,13 +8,27 @@
     <video  class="col-md-12  well well-sm video" height="480" controls>
       <source src="{{ video.file.url }}" type="video/mp4"/>
     </video>
-    <blockquote>
-      <p style='word-wrap: break-word;'>{{ video.description }}</p>
-      <a href="{% url 'profile' video.author.pk %}"><footer class="h4 text-muted pull-right">{{ video.author }}</footer></a>
-    </blockquote>
   </div>
   <div class="chat_section col-md-4">
     {% include 'chat/chat.html' %}
   </div>
 </div>
+<div class="row">
+  <div class="col-md-8">
+    <blockquote>
+      <p style='word-wrap: break-word;'>{{ video.description }}</p>
+      <a href="{% url 'profile' video.author.pk %}">
+        <footer class="h4 text-muted pull-right">
+          {{ video.author }}
+          {% if video.user.userprofile.picture %}
+            <img src="{{video.user.userprofile.picture.url}}" class="icon-small"/>
+          {% else %}
+            <img src="{% static "users/img/default-img.png"%}" class="icon-small"/>
+          {% endif %}
+        </footer>
+      </a>
+    </blockquote>
+  </div>
+</div>
+
 {% endblock content %}
