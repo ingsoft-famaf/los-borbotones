@@ -1,11 +1,9 @@
 from django.test import TestCase
 from django.test import Client
-from .models import Video
 from videos.models import Video
 from users.models import User
 from django.contrib.auth.models import User
 from django.db import models
-from users.models import User
 
 class view_tests(TestCase):
 	def test_view_error_404_random_string(self):
@@ -61,13 +59,8 @@ class view_tests(TestCase):
 		fp = open("test.txt", "a+")
 
 		response = clienteoscar.post('/video/upload/', {'author': 'oscar', 'title': 'videotest','description' : 'testeando', 'file' :fp})
-		videos = Video.objects.all()
-
-		for video in videos:
-			if video.title == "videotest":
-				assert(False)
-				pass
-		assert(True)
+		videos = Video.objects.filter(title="videotest")
+		self.assertEqual(0, Video.objects.filter(title="videotest").count())
 
 	def test_upload_valid(self):
 		userflor = User.objects.create_user(username="flor", email="flor@hotmail.com", password="123")
@@ -81,10 +74,4 @@ class view_tests(TestCase):
 
 
 		response = clientflor.post('/video/upload/', {'author': 'flor', 'title': 'videotestcabra','description' : 'testeando', 'file' :fp})
-		videos = Video.objects.all()
-
-		for video in videos:
-			if video.title == "videotestcabra":
-				isvalid = video.title == "videotestcabra"
-				pass
-		self.assertEqual(True, isvalid)
+		self.assertEqual(1, Video.objects.filter(title="videotestcabra").count())
