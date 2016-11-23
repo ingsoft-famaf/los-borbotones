@@ -23,13 +23,8 @@ def create_message(request):
                     return redirect("/")
                 new_message.save()
                 return JsonResponse(request.POST)
-            else:
-                return redirect("/")
-        else:
-            return redirect("/")
-    else:
-        return redirect("/")
-        
+    return redirect("/")
+
 @login_required()
 def message_list(request, pk ):
     if request.method == "GET":
