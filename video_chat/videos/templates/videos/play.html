@@ -21,6 +21,7 @@
                     url: "/user/last_video/",
                     data : {
                             csrfmiddlewaretoken : csrftoken,
+                            chat_id : {{ chatroom.id }},
                         },
                 });
             });
