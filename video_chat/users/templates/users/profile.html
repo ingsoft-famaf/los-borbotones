@@ -37,7 +37,7 @@
   <br>
   <p class="h3 text-center"> Videos Subidos </p>
 
-  <div class="list-group col-md-8 col-md-offset-2">
+  <div class="list-group col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
     {% for video in video_list %}
     <li class="list-group-item">
       <a id="video_title" class="h4 text-primary" href="{% url 'videos:play' video.id %}">{{video.title}}</a>

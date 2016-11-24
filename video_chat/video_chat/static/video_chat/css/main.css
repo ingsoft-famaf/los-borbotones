@@ -20,31 +20,3 @@ body { padding-top: 70px; }
     font-size: 40px;
     text-align: center;
 }
-
-[class^="icon-"]{
-    display: inline-block;
-    width: 64px;
-    height: 51px;
-    overflow: hidden;
-    zoom:0.5;
-    -moz-transform:scale(0.5);
-    -moz-transform-origin: 0 0;
-}
-
-.icon-huge{
-    zoom:1;
-    -moz-transform:scale(1);
-    -moz-transform-origin: 0 0;
-}
-
-.icon-big{
-    zoom:0.60;
-    -moz-transform:scale(0.60);
-    -moz-transform-origin: 0 0;
-}
-
-.icon-small{
-    zoom:0.29;
-    -moz-transform:scale(0.29);
-    -moz-transform-origin: 0 0;
-}

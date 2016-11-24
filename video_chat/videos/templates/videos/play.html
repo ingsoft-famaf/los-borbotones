@@ -13,6 +13,7 @@
     <br>
     <blockquote>
       <p style='word-wrap: break-word;'>{{ video.description }}</p>
+      {% if video.author %}
       <a href="{% url 'profile' video.author.pk %}">
         <span class="h4 text-muted pull-right">
           {{ video.author }}
@@ -23,6 +24,7 @@
           {% endif %}
         </span>
       </a>
+      {% endif %}
     </blockquote>
   </div>
   <div class="chat_section col-lg-4 col-sm-4 col-xs-12 col-md-4">
