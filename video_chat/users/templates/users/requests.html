@@ -4,25 +4,32 @@
 
 {% block content %}
 {% if requests_list %}
-<ul>
+<div class='row match-my-cols row-eq-height'>
   {% for request in requests_list %}
-  <li>
-    <a href="{% url 'profile' request.sender.pk %}">{{request.sender.username}}</a>
-    <form method="POST" action="{% url 'users:accept_request' %}">
-      {% csrf_token %}
-      <button type="submit" name="friend_pk" value="{{ request.sender.pk }}" class="btn btn-default">
-        Aceptar solicitud.
-      </button>
-    </form>
-    <form method="POST" action="{% url 'users:decline_request' %}">
-      {% csrf_token %}
-      <button type="submit" name="friend_request" value="{{ request.pk }}" class="btn btn-default">
-        Cancelar solicitud.
-      </button>
-    </form>
-  </li>
+    <div class='col-md-3 col-md-offset-1 col-xs-3 col-xs-offset-1 col-lg-3 col-lg-offset-1 col-sm-3 col-sm-offset-1'>
+      <a href="{% url 'profile' request.sender.id  %}">
+        {% if request.sender.userprofile.picture %}
+        <img class="img-responsive center-block" src="{{request.sender.userprofile.picture.url}}" alt="profile picture"/>
+        {% else %}
+        <img class="img-responsive center-block" src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
+        {% endif %}
+      </a>
+      <p class="text-center h4">{{ request.sender.username }}</p>
+      <form method="POST" action="{% url 'users:accept_request' %}">
+        {% csrf_token %}
+        <button type="submit" name="friend_pk" value="{{ request.sender.pk }}" class="btn btn-success btn-block">
+          Aceptar solicitud
+        </button>
+      </form>
+      <form method="POST" action="{% url 'users:decline_request' %}">
+        {% csrf_token %}
+        <button type="submit" name="friend_request" value="{{ request.pk }}" class="btn btn-danger btn-block">
+          Cancelar solicitud
+        </button>
+      </form>
+    </div>
   {% endfor %}
-</ul>
+</div>
 {% else %}
   <p>No posee solicitudes de amistad sin responder.</p>
 {% endif %}
