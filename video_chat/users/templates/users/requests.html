@@ -1,6 +1,13 @@
 {% extends 'video_chat/base.html' %}
 {% load static %}
 
+{% block extra_stylesheet %}
+<style type="text/css">
+.row.match-my-cols [class*="col-"]{
+    padding-top: 15px;
+}
+</style>
+{% endblock %}
 
 {% block content %}
 {% if requests_list %}
