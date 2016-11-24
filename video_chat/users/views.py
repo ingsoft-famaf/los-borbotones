@@ -117,7 +117,7 @@ class SearchUser(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         key = self.request.GET['search_key']
-        return(UserProfile.objects.filter(user__username__icontains = key))
+        return(UserProfile.objects.filter(user__username__icontains = key).exclude(pk = self.request.user.userprofile.pk))
 
 @login_required
 def SendRequest(request):

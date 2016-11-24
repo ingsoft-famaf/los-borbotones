@@ -2,29 +2,33 @@
 {% load static %}
 
 {% block extra_stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{% static 'users/style.css' %}" />
+<style type="text/css">
+.row.match-my-cols [class*="col-"]{
+    padding-top: 15px;
+}
+</style>
 {% endblock %}
 
 {% block content %}
 {% if friends_list %}
-<ul>
-  {% for friend in friends_list %}
-  <li>
-    {% if friend.picture %}
-    <img src="{{friend.picture.url}}" alt="profile picture"/>
+<div class='row match-my-cols row-eq-height'>
+  {% for userprofile in friends_list %}
+    <div class='col-md-3 col-md-offset-1 col-xs-3 col-xs-offset-1 col-lg-3 col-lg-offset-1 col-sm-3 col-sm-offset-1'>
+    {% if userprofile.picture %}
+      <img class="img-responsive center-block" src="{{userprofile.picture.url}}" alt="profile picture"/>
     {% else %}
-    <img src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
+      <img class="img-responsive center-block" src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
     {% endif %}
-    <a href="{% url 'profile' friend.user.id  %}">{{ friend.user.username }}</a>
-    <form method="POST" action="{% url 'users:delete_friend' %}">
-      {% csrf_token %}
-      <button type="submit" name="friend_pk" value="{{ friend.pk }}" class="btn btn-danger">
-        Eliminar amigo
-      </button>
-    </form>
-  </li>
+      <p class="text-center h4">{{ userprofile.user.username }}</p>
+      <a href="{% url 'profile' userprofile.id  %}"><button type="button" class="btn btn-primary btn-block">Ver perfil</button></a>
+      <form method="POST" action="{% url 'users:delete_friend' %}">{% csrf_token %}
+        <button type="submit" name="friend_pk" value="{{ userprofile.pk }}" class="btn btn-danger btn-block">
+          Eliminar amigo
+        </button>
+      </form>
+    </div>
   {% endfor %}
-</ul>
+</div>
 {% else %}
   <p>Usted no tiene amigos todavía.</p>
 {% endif %}

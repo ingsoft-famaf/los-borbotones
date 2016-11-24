@@ -15,6 +15,7 @@ from chat.models import ChatRoom
 class SearchVideo(LoginRequiredMixin, generic.ListView):
     template_name = 'videos/search.html'
     context_object_name = 'founded_videos'
+    paginate_by = 5
 
     def get_queryset(self):
         key = self.request.GET['search_key']
