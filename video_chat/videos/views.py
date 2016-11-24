@@ -39,6 +39,8 @@ class Play(LoginRequiredMixin, generic.DetailView):
                     if ((chatroom.users.all() & userprofile.friends.all()).exists()):
                         chatroom.users.add(userprofile)
                     else: raise ObjectDoesNotExist
+                else:
+                    pass
             except ObjectDoesNotExist:
                 chatroom = userprofile.chatroom_set.create(video=self.object)
 

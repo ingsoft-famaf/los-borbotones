@@ -1,15 +1,21 @@
 {% extends 'video_chat/base.html' %}
+{% load static %}
 
 {% block content %}
-<ul>
-{% for up in friends_list %}
-  {% for chat in up.chatroom_set.all %}
-    <li>
-      <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
-      <span>ha visto </span>
-      <a href="{% url 'videos:play' chat.video.pk chat.pk %}"> {{ chat.video.title }}</a>
-    </li>
-  {% endfor %}
-{% endfor %}
-</ul>
+<div class="list-group col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+    {% for up in friends_list %}
+      {% for chat in up.chatroom_set.all %}
+      <li class="list-group-item">
+          {% if up.picture %}
+            <img src="{{ up.picture.url }}" width="35px" height="35px" class="img-rounded"/>
+          {% else %}
+            <img src="{% static "users/img/default-img.png"%}" width="35px" height="35px" class="img-rounded"/>
+          {% endif %}
+          <a href="{% url 'profile' up.user.pk %}"> {{ up.user.username }}</a>
+          <span> esta viendo </span>
+          <a href="{% url 'videos:play' chat.video.pk chat.pk %}"> {{ chat.video.title }}</a>
+      </li>
+      {% endfor %}
+    {% endfor %}
+</div>
 {% endblock content %}
