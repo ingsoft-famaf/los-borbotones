@@ -17,6 +17,7 @@ from videos.models import Video
 from users.forms import UserForm, UserProfileForm
 from users.models import UserProfile, FriendRequest
 
+from chat.models import ChatRoom
 
 def Register(request):
     context = RequestContext(request)
@@ -106,7 +107,7 @@ class UserProfileDetail(LoginRequiredMixin, generic.DetailView):
             data['is_friend'] = True
         else:
             data['is_friend'] = False
-            
+
         return data
 
 
@@ -124,7 +125,7 @@ def SendRequest(request):
     if request.method == 'POST':
         friend_pk = request.POST['friend_pk']
         friend = User.objects.get(pk=friend_pk)
-        if ((not FriendRequest.objects.filter(sender=friend, receiver=user).exists()) 
+        if ((not FriendRequest.objects.filter(sender=friend, receiver=user).exists())
             and (not user.userprofile.friends.filter(pk=friend_pk).exists())):
             FriendRequest.objects.get_or_create(sender=user, receiver=friend)
     return redirect('home')
@@ -175,3 +176,15 @@ class ViewFriends(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return(self.request.user.userprofile.friends.all())
+
+@login_required
+def last_video(request):
+    if request.method == 'POST':
+        if request.is_ajax():
+            user = UserProfile.objects.get(pk=request.user.userprofile.pk)
+            chat = ChatRoom.objects.get(pk=request.POST['chat_id'])
+            chat.users.remove(user)
+            if chat.users.count() == 0:
+                chat.delete()
+            return HttpResponse(request)
+    return redirect("/")
