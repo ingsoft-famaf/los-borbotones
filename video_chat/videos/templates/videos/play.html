@@ -3,34 +3,30 @@
 
 {% block content %}
 <div class="row">
-  <div class="video_section col-lg-8 col-sm-8 col-xs-12 col-md-8">
+  <div class="video_section col-lg-8 col-sm-8 col-xs-12 col-md-8 ">
     <h3 class="video_title">{{video.title}}</h3>
     <div class="embed-responsive embed-responsive-16by9">
-    <video  class="col-md-12  well well-sm video embebed-responsive-item" height="480" controls>
-      <source src="{{ video.file.url }}" type="video/mp4"/>
-    </video>
+      <video  class="col-md-12  well well-sm video embebed-responsive-item" height="480" controls>
+        <source src="{{ video.file.url }}" type="video/mp4"/>
+      </video>
     </div>
+    <br>
+    <blockquote>
+      <p style='word-wrap: break-word;'>{{ video.description }}</p>
+      <a href="{% url 'profile' video.author.pk %}">
+        <span class="h4 text-muted pull-right">
+          {{ video.author }}
+          {% if video.author.userprofile.picture %}
+            <img src="{{ video.author.userprofile.picture.url }}" width="35px" height="35px" class="img-rounded"/>
+          {% else %}
+            <img src="{% static "users/img/default-img.png"%}" width="35px" height="35px" class="img-rounded"/>
+          {% endif %}
+        </span>
+      </a>
+    </blockquote>
   </div>
   <div class="chat_section col-lg-4 col-sm-4 col-xs-12 col-md-4">
     {% include 'chat/chat.html' %}
   </div>
 </div>
-<div class="row">
-  <div class="col-md-8">
-    <blockquote>
-      <p style='word-wrap: break-word;'>{{ video.description }}</p>
-      <a href="{% url 'profile' video.author.pk %}">
-        <footer class="h4 text-muted pull-right">
-          {{ video.author }}
-          {% if video.user.userprofile.picture %}
-            <img src="{{video.user.userprofile.picture.url}}" class="icon-small"/>
-          {% else %}
-            <img src="{% static "users/img/default-img.png"%}" class="icon-small"/>
-          {% endif %}
-        </footer>
-      </a>
-    </blockquote>
-  </div>
-</div>
-
 {% endblock content %}
