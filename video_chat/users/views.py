@@ -179,9 +179,11 @@ class ViewFriends(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def last_video(request):
+    import ipdb
+    ipdb.set_trace()
     if request.method == 'POST':
         if request.is_ajax():
-            user = UserProfile.objects.get(pk=request.user.userprofile.pk)
+            user = request.user.userprofile.pk
             chat = ChatRoom.objects.get(pk=request.POST['chat_id'])
             chat.users.remove(user)
             if chat.users.count() == 0:

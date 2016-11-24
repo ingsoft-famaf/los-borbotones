@@ -2,29 +2,46 @@
 {% load static %}
 
 {% block content %}
-        <div class="video_section">
-          <h3 class="video_title">{{video.title}}</h3>
-          <video width="600" height="480" controls>
-            <source src="{{video.file.url}}" type="video/mp4"/>
-          </video>
-          <p>{{video.description}}</p>
-        </div>
-        <div class="chat_section">
-            {% include 'chat/chat.html' %}
-        </div>
-        <script type="text/javascript">
+<div class="row">
+  <div class="video_section col-lg-8 col-sm-8 col-xs-12 col-md-8 ">
+    <h3 class="video_title">{{video.title}}</h3>
+    <div class="embed-responsive embed-responsive-16by9">
+      <video  class="col-md-12  well well-sm video embebed-responsive-item" height="480" controls>
+        <source src="{{ video.file.url }}" type="video/mp4"/>
+      </video>
+    </div>
+    <br>
+    <blockquote>
+      <p style='word-wrap: break-word;'>{{ video.description }}</p>
+      <a href="{% url 'profile' video.author.pk %}">
+        <span class="h4 text-muted pull-right">
+          {{ video.author }}
+          {% if video.author.userprofile.picture %}
+            <img src="{{ video.author.userprofile.picture.url }}" width="35px" height="35px" class="img-rounded"/>
+          {% else %}
+            <img src="{% static "users/img/default-img.png"%}" width="35px" height="35px" class="img-rounded"/>
+          {% endif %}
+        </span>
+      </a>
+    </blockquote>
+  </div>
+  <div class="chat_section col-lg-4 col-sm-4 col-xs-12 col-md-4">
+    {% include 'chat/chat.html' %}
+  </div>
+</div>
 
-            $(window).on("beforeunload", function () {
-                var csrftoken = getCookie('csrftoken');
-                $.ajax({
-                    type: "POST",
-                    url: "/user/last_video/",
-                    data : {
-                            csrfmiddlewaretoken : csrftoken,
-                            chat_id : {{ chatroom.id }},
-                        },
-                });
-            });
+<script type="text/javascript">
 
-        </script>
+  $(window).on("beforeunload", function () {
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+      type: "POST",
+      url: "/user/last_video/",
+      data : {
+        csrfmiddlewaretoken : csrftoken,
+        chat_id : {{ chatroom.id }},
+      },
+    });
+  });
+</script>
 {% endblock content %}
