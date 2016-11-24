@@ -7,17 +7,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="profile_style">
-  <div class="profile_info">
-    {% if userprofile.picture %}
-      <img class="profile_picture" src="{{userprofile.picture.url}}" alt="profile picture"/>
-    {% else %}
-      <img class="profile_picture" src="{% static "users/img/default-img.png"%}" alt="profile picture"/>
-    {% endif %}
-    <p id="username" >{{ userprofile.user.username }}</p>
-
+<div class="conteiner profile_style">
+  <div class="jumbotron">
     {% if is_friend %}
-      <form method="POST" action="{% url 'users:delete_friend' %}">
+      <form method="POST" class="text-right" action="{% url 'users:delete_friend' %}">
         {% csrf_token %}
         <button id="button_friendship" type="submit" name="friend_pk" value="{{ userprofile.pk }}" class="btn btn-danger">
           Eliminar amigo
@@ -25,7 +18,7 @@
       </form>
     {% else %}
       {% if can_send %}
-        <form action="{% url 'users:send_request' %}" method="POST">
+        <form action="{% url 'users:send_request' %}" class="text-right" method="POST">
           {% csrf_token %}
           <button id="button_friendship" type="submit" name="friend_pk" value="{{ profile_pk }}" class="btn btn-primary">
             Enviar solicitud
@@ -33,19 +26,32 @@
         </form>
       {% endif %}
     {% endif %}
+    {% if userprofile.picture %}
+      <img class="profile-image center-block img-circle" width="250px" height="250px" src="{{ userprofile.picture.url }}" alt="profile picture"/>
+    {% else %}
+      <img class="profile-image center-block img-circle" width="250px" height="250px" src="{% static 'users/img/default-img.png' %}" alt="profile picture"/>
+    {% endif %}
+    <br>
+    <h2 class="text-center" >{{ userprofile.user.username }}</h2>
   </div>
-  <p id="videos"> Videos Subidos </p>
-  <div class="videos_list">
-    <ul>
-      {% for video in video_list %}
-      <li>
-        <a id="video_title" href="{% url 'videos:play' video.id %}" class="btn btn-info btn-xs">{{video.title}}</a>
-        {% ifequal user.pk profile_pk %}
-        <a id="video_title" href="{% url 'videos:delete' video.id %}" class="btn btn-default btn-xs">Borrar Video</a>
-        {% endifequal %}
-      </li>
-      {% endfor%}
-    </ul>
-  </div>
+  <br>
+  <p class="h3 text-center"> Videos Subidos </p>
+
+  <div class="list-group col-md-8 col-md-offset-2">
+    {% for video in video_list %}
+    <li class="list-group-item">
+      <a id="video_title" class="h4 text-primary" href="{% url 'videos:play' video.id %}">{{video.title}}</a>
+
+      {% ifequal user.pk profile_pk %}
+      <span class="pull-right ">
+        <a id="video_title" href="{% url 'videos:delete' video.id %}">
+          <button class="btn btn-xs btn-danger">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </a>
+      </span>
+      {% endifequal %}
+    </li>
+    {% endfor%}
 </div>
 {% endblock content %}
