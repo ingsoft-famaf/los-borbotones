@@ -1,7 +1,7 @@
 {% extends 'video_chat/base.html' %}
 
 {% block content %}
-
+<class style="text-align: center">
 <h1>Borrar Video</h1>
 
 <p>¿Esta seguro que desea eliminar el video "{{ video.title }}"?</p>
@@ -11,4 +11,5 @@
   <input class="btn btn-danger" type="submit" value="Si, eliminar."/>
   <a class="btn btn-default" role="button" href="{% url 'profile' user.id %}">No, cancelar.</a>
 </form>
+</class>
 {% endblock %}
