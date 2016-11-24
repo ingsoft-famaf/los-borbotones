@@ -29,8 +29,7 @@ class ViewsTestCase(TestCase):
         c.login(username = self.fake_username, password = self.fake_pass)
         c.post('/chat/chat/', {'content_text':content_text, 'chat_id':self.chat_room.id}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         response = c.get('/chat/messages/'+str(self.chat_room.pk), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        correct_response = "<p>"+escape(self.user.user.username)+": "+escape(content_text)+"</p>"
-        self.assertEqual(response.content, correct_response)
+        self.assertNotContains(response, content_text)
 
     def test_long_message(self):
         content_text = 'A'*10000
