@@ -78,3 +78,32 @@
 <script type="text/javascript">
     $("#chat_window").scrollTop($("#chat_window")[0].scrollHeight);
 </script>
+
+<script language="javascript">
+window.onload = function() {
+  scrollDiv_init();
+};
+
+ScrollRate = 10;
+function scrollDiv_init() {
+  DivElmnt = document.getElementById("chat_window");
+  DivElmnt.onmouseover = pauseDiv;
+  DivElmnt.onmouseout = resumeDiv;
+  ReachedMaxScroll = false;
+  DivElmnt.scrollTop = 0;
+  PreviousScrollTop  = 0;
+}
+
+function pauseDiv() {
+  clearInterval(ScrollInterval);
+}
+function resumeDiv() {
+  PreviousScrollTop = DivElmnt.scrollTop;
+  ScrollInterval = setInterval('scrollDiv()', ScrollRate);
+}
+function scrollDiv() {
+    DivElmnt.scrollTop = PreviousScrollTop;
+    PreviousScrollTop++;
+    ReachedMaxScroll = DivElmnt.scrollTop >= (DivElmnt.scrollHeight - DivElmnt.offsetHeight); 
+}
+</script>
